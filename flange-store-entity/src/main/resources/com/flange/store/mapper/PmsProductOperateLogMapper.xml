@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flange.store.mapper.PmsProductOperateLogMapper">
+  <resultMap id="BaseResultMap" type="com.flange.store.model.PmsProductOperateLog">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="price_old" jdbcType="DECIMAL" property="priceOld" />
+    <result column="price_new" jdbcType="DECIMAL" property="priceNew" />
+    <result column="sale_price_old" jdbcType="DECIMAL" property="salePriceOld" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, product_id, price_old, price_new, sale_price_old
+  </sql>
+  <select id="selectByExample" parameterType="com.flange.store.model.PmsProductOperateLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pms_product_operate_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pms_product_operate_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from pms_product_operate_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.flange.store.model.PmsProductOperateLogExample">
+    delete from pms_product_operate_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.flange.store.model.PmsProductOperateLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pms_product_operate_log (product_id, price_old, price_new, 
+      sale_price_old)
+    values (#{productId,jdbcType=VARCHAR}, #{priceOld,jdbcType=DECIMAL}, #{priceNew,jdbcType=DECIMAL}, 
+      #{salePriceOld,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flange.store.model.PmsProductOperateLog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pms_product_operate_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="priceOld != null">
+        price_old,
+      </if>
+      <if test="priceNew != null">
+        price_new,
+      </if>
+      <if test="salePriceOld != null">
+        sale_price_old,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="priceOld != null">
+        #{priceOld,jdbcType=DECIMAL},
+      </if>
+      <if test="priceNew != null">
+        #{priceNew,jdbcType=DECIMAL},
+      </if>
+      <if test="salePriceOld != null">
+        #{salePriceOld,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.flange.store.model.PmsProductOperateLogExample" resultType="java.lang.Integer">
+    select count(*) from pms_product_operate_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pms_product_operate_log
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priceOld != null">
+        price_old = #{record.priceOld,jdbcType=DECIMAL},
+      </if>
+      <if test="record.priceNew != null">
+        price_new = #{record.priceNew,jdbcType=DECIMAL},
+      </if>
+      <if test="record.salePriceOld != null">
+        sale_price_old = #{record.salePriceOld,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pms_product_operate_log
+    set id = #{record.id,jdbcType=VARCHAR},
+      product_id = #{record.productId,jdbcType=VARCHAR},
+      price_old = #{record.priceOld,jdbcType=DECIMAL},
+      price_new = #{record.priceNew,jdbcType=DECIMAL},
+      sale_price_old = #{record.salePriceOld,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flange.store.model.PmsProductOperateLog">
+    update pms_product_operate_log
+    <set>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="priceOld != null">
+        price_old = #{priceOld,jdbcType=DECIMAL},
+      </if>
+      <if test="priceNew != null">
+        price_new = #{priceNew,jdbcType=DECIMAL},
+      </if>
+      <if test="salePriceOld != null">
+        sale_price_old = #{salePriceOld,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flange.store.model.PmsProductOperateLog">
+    update pms_product_operate_log
+    set product_id = #{productId,jdbcType=VARCHAR},
+      price_old = #{priceOld,jdbcType=DECIMAL},
+      price_new = #{priceNew,jdbcType=DECIMAL},
+      sale_price_old = #{salePriceOld,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
