@@ -1,13 +1,13 @@
-package com.flange.store.flangestoreconsole;
+package com.flange.store.search;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FlangeStoreConsoleApplication {
+public class SearchApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FlangeStoreConsoleApplication.class, args);
+		SpringApplication.run(SearchApplication.class, args);
 	}
 
 }

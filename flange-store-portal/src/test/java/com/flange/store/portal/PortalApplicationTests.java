@@ -1,4 +1,4 @@
-package com.flange.store.flangestoreportal;
+package com.flange.store.portal;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FlangeStorePortalApplicationTests {
+public class PortalApplicationTests {
 
 	@Test
 	public void contextLoads() {

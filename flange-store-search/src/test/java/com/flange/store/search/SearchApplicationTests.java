@@ -1,4 +1,4 @@
-package com.flange.store.flangestoreconsole;
+package com.flange.store.search;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FlangeStoreConsoleApplicationTests {
+public class SearchApplicationTests {
 
 	@Test
 	public void contextLoads() {

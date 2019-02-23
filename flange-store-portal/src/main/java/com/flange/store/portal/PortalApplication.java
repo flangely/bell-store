@@ -1,13 +1,13 @@
-package com.flange.store.flangestoreportal;
+package com.flange.store.portal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FlangeStorePortalApplication {
+public class PortalApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FlangeStorePortalApplication.class, args);
+		SpringApplication.run(PortalApplication.class, args);
 	}
 
 }
