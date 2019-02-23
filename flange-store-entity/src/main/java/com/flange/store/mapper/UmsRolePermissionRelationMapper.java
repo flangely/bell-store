@@ -1,0 +1,30 @@
+package com.flange.store.mapper;
+
+import com.flange.store.model.UmsRolePermissionRelation;
+import com.flange.store.model.UmsRolePermissionRelationExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface UmsRolePermissionRelationMapper {
+    int countByExample(UmsRolePermissionRelationExample example);
+
+    int deleteByExample(UmsRolePermissionRelationExample example);
+
+    int deleteByPrimaryKey(String id);
+
+    int insert(UmsRolePermissionRelation record);
+
+    int insertSelective(UmsRolePermissionRelation record);
+
+    List<UmsRolePermissionRelation> selectByExample(UmsRolePermissionRelationExample example);
+
+    UmsRolePermissionRelation selectByPrimaryKey(String id);
+
+    int updateByExampleSelective(@Param("record") UmsRolePermissionRelation record, @Param("example") UmsRolePermissionRelationExample example);
+
+    int updateByExample(@Param("record") UmsRolePermissionRelation record, @Param("example") UmsRolePermissionRelationExample example);
+
+    int updateByPrimaryKeySelective(UmsRolePermissionRelation record);
+
+    int updateByPrimaryKey(UmsRolePermissionRelation record);
+}
