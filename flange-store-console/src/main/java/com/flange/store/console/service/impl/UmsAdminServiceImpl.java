@@ -3,6 +3,7 @@ package com.flange.store.console.service.impl;
 import com.flange.store.console.dto.UmsAdminParam;
 import com.flange.store.console.service.UmsAdminService;
 import com.flange.store.model.UmsAdmin;
+import com.flange.store.model.UmsAdminExample;
 import com.flange.store.model.UmsPermission;
 import com.flange.store.model.UmsRole;
 import com.flange.store.mapper.UmsAdminMapper;
@@ -23,8 +24,15 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     @Autowired
     private UmsAdminMapper adminMapper;
 
+
     @Override
     public UmsAdmin getAdminByUsername(String username) {
+        UmsAdminExample example = new UmsAdminExample();
+        example.createCriteria().andUsernameEqualTo(username);
+        List<UmsAdmin> adminList = adminMapper.selectByExample(example);
+        if (adminList != null && adminList.size() > 0){
+            return adminList.get(0);
+        }
         return null;
     }
 
@@ -44,7 +52,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
-    public UmsAdmin getItem(Long id) {
+    public UmsAdmin getItem(String id) {
         return null;
     }
 
@@ -54,34 +62,32 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
-    public int update(Long id, UmsAdmin admin) {
+    public int update(String id, UmsAdmin admin) {
         return 0;
     }
 
     @Override
-    public int delete(Long id) {
+    public int delete(String id) {
         return 0;
     }
 
     @Override
-    public int updateRole(Long adminId, List<Long> roleIds) {
+    public int updateRole(String adminId, List<String> roleIds) {
         return 0;
     }
 
     @Override
-    public List<UmsRole> getRoleList(Long adminId) {
+    public List<UmsRole> getRoleList(String adminId) {
         return null;
     }
 
     @Override
-    public int updatePermission(Long adminId, List<Long> permissionIds) {
+    public int updatePermission(String adminId, List<String> permissionIds) {
         return 0;
     }
 
     @Override
-    public List<UmsPermission> getPermissionList(Long adminId) {
+    public List<UmsPermission> getPermissionList(String adminId) {
         return null;
     }
-
-
 }

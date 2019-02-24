@@ -43,7 +43,7 @@ public interface UmsAdminService {
     /**
      * 根据用户id获取用户
      */
-    UmsAdmin getItem(Long id);
+    UmsAdmin getItem(String id);
 
     /**
      * 根据用户名或昵称分页查询用户
@@ -53,32 +53,32 @@ public interface UmsAdminService {
     /**
      * 修改指定用户信息
      */
-    int update(Long id, UmsAdmin admin);
+    int update(String id, UmsAdmin admin);
 
     /**
      * 删除指定用户
      */
-    int delete(Long id);
+    int delete(String id);
 
     /**
      * 修改用户角色关系
      */
     @Transactional
-    int updateRole(Long adminId, List<Long> roleIds);
+    int updateRole(String adminId, List<String> roleIds);
 
     /**
      * 获取用户对于角色
      */
-    List<UmsRole> getRoleList(Long adminId);
+    List<UmsRole> getRoleList(String adminId);
 
     /**
      * 修改用户的+-权限
      */
     @Transactional
-    int updatePermission(Long adminId, List<Long> permissionIds);
+    int updatePermission(String adminId, List<String> permissionIds);
 
     /**
      * 获取用户所有权限（包括角色权限和+-权限）
      */
-    List<UmsPermission> getPermissionList(Long adminId);
+    List<UmsPermission> getPermissionList(String adminId);
 }

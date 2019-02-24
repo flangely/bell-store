@@ -62,6 +62,11 @@ public class UmsPermission implements Serializable {
      */
     private Integer sort;
 
+    /**
+     * 权限值
+     */
+    private String value;
+
     private static final long serialVersionUID = 1L;
 
     public String getId() {
@@ -145,6 +150,7 @@ public class UmsPermission implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", pid=").append(pid);
         sb.append(", name=").append(name);
+        sb.append(", value=").append(value);
         sb.append(", icon=").append(icon);
         sb.append(", type=").append(type);
         sb.append(", uri=").append(uri);
@@ -154,5 +160,13 @@ public class UmsPermission implements Serializable {
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }
