@@ -11,6 +11,7 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, pid, name, icon, type, uri, status, create_time, sort
+    id, pid, name, icon, type, uri, status, create_time, sort, value
   </sql>
   <select id="selectByExample" parameterType="com.flange.store.model.UmsPermissionExample" resultMap="BaseResultMap">
     select
@@ -109,10 +110,12 @@
     </selectKey>
     insert into ums_permission (pid, name, icon, 
       type, uri, status, 
-      create_time, sort)
+      create_time, sort, value
+      )
     values (#{pid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
       #{type,jdbcType=INTEGER}, #{uri,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER})
+      #{createTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER}, #{value,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.UmsPermission">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
@@ -144,6 +147,9 @@
       <if test="sort != null">
         sort,
       </if>
+      <if test="value != null">
+        value,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="pid != null">
@@ -169,6 +175,9 @@
       </if>
       <if test="sort != null">
         #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -208,6 +217,9 @@
       <if test="record.sort != null">
         sort = #{record.sort,jdbcType=INTEGER},
       </if>
+      <if test="record.value != null">
+        value = #{record.value,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -223,7 +235,8 @@
       uri = #{record.uri,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      sort = #{record.sort,jdbcType=INTEGER}
+      sort = #{record.sort,jdbcType=INTEGER},
+      value = #{record.value,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -255,6 +268,9 @@
       <if test="sort != null">
         sort = #{sort,jdbcType=INTEGER},
       </if>
+      <if test="value != null">
+        value = #{value,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -267,7 +283,8 @@
       uri = #{uri,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      sort = #{sort,jdbcType=INTEGER}
+      sort = #{sort,jdbcType=INTEGER},
+      value = #{value,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

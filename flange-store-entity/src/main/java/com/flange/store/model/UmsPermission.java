@@ -64,6 +64,8 @@ public class UmsPermission implements Serializable {
 
     /**
      * 权限值
+     *
+     * @mbggenerated
      */
     private String value;
 
@@ -141,6 +143,14 @@ public class UmsPermission implements Serializable {
         this.sort = sort;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -150,23 +160,15 @@ public class UmsPermission implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", pid=").append(pid);
         sb.append(", name=").append(name);
-        sb.append(", value=").append(value);
         sb.append(", icon=").append(icon);
         sb.append(", type=").append(type);
         sb.append(", uri=").append(uri);
         sb.append(", status=").append(status);
         sb.append(", createTime=").append(createTime);
         sb.append(", sort=").append(sort);
+        sb.append(", value=").append(value);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 }
