@@ -105,14 +105,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.UmsAdmin">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+<!--    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
+    </selectKey>-->
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
-    insert into ums_admin (username, password, icon, 
+    insert into ums_admin (id, username, password, icon,
       email, nick_name, note, 
       create_time, login_time, status
       )
-    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR},#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR},
       #{email,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{loginTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
       )

@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -106,6 +107,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         //加密密码
         String bcryptPassword = passwordEncoder.encode(umsAdmin.getPassword());
         umsAdmin.setPassword(bcryptPassword);
+//        umsAdmin.setId(UUID.randomUUID().toString().replace("-", ""));
         adminMapper.insert(umsAdmin);
         return umsAdmin;
     }
