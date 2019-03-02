@@ -137,10 +137,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.OmsOrder">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
-    insert into oms_order (member_id, coupon_id, order_sn, 
+    insert into oms_order (id, member_id, coupon_id, order_sn,
       create_time, member_username, total_amount, 
       pay_amount, freight_amount, discount_amount, 
       pay_type, source_type, status, 
@@ -153,7 +153,7 @@
       delete_status, payment_time, delivery_time, 
       receive_time, comment_time, modify_time
       )
-    values (#{memberId,jdbcType=VARCHAR}, #{couponId,jdbcType=VARCHAR}, #{orderSn,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{couponId,jdbcType=VARCHAR}, #{orderSn,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{memberUsername,jdbcType=VARCHAR}, #{totalAmount,jdbcType=DECIMAL}, 
       #{payAmount,jdbcType=DECIMAL}, #{freightAmount,jdbcType=DECIMAL}, #{discountAmount,jdbcType=DECIMAL}, 
       #{payType,jdbcType=INTEGER}, #{sourceType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
@@ -168,11 +168,12 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.OmsOrder">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
     insert into oms_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,
       <if test="memberId != null">
         member_id,
       </if>
@@ -283,6 +284,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=VARCHAR},
       <if test="memberId != null">
         #{memberId,jdbcType=VARCHAR},
       </if>

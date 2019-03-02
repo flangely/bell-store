@@ -125,10 +125,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.OmsOrderReturnApply">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
-    insert into oms_order_return_apply (order_id, company_address_id, product_id, 
+    insert into oms_order_return_apply (id, order_id, company_address_id, product_id,
       order_sn, create_time, member_username, 
       return_amount, return_name, return_phone, 
       status, handle_time, product_pic, 
@@ -137,7 +137,7 @@
       reason, description, proof_pics, 
       handle_note, handle_man, receive_man, 
       receive_time, receive_note)
-    values (#{orderId,jdbcType=VARCHAR}, #{companyAddressId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{companyAddressId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR},
       #{orderSn,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{memberUsername,jdbcType=VARCHAR}, 
       #{returnAmount,jdbcType=DECIMAL}, #{returnName,jdbcType=VARCHAR}, #{returnPhone,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{handleTime,jdbcType=TIMESTAMP}, #{productPic,jdbcType=VARCHAR}, 
@@ -148,11 +148,12 @@
       #{receiveTime,jdbcType=TIMESTAMP}, #{receiveNote,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.OmsOrderReturnApply">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
     insert into oms_order_return_apply
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,
       <if test="orderId != null">
         order_id,
       </if>
@@ -233,6 +234,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=VARCHAR},
       <if test="orderId != null">
         #{orderId,jdbcType=VARCHAR},
       </if>

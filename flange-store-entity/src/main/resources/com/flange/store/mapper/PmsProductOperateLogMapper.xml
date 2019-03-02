@@ -100,20 +100,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.PmsProductOperateLog">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
-    insert into pms_product_operate_log (product_id, price_old, price_new, 
+    insert into pms_product_operate_log (id, product_id, price_old, price_new,
       sale_price_old)
-    values (#{productId,jdbcType=VARCHAR}, #{priceOld,jdbcType=DECIMAL}, #{priceNew,jdbcType=DECIMAL}, 
+    values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{priceOld,jdbcType=DECIMAL}, #{priceNew,jdbcType=DECIMAL},
       #{salePriceOld,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.PmsProductOperateLog">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
     insert into pms_product_operate_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,
       <if test="productId != null">
         product_id,
       </if>
@@ -128,6 +129,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=VARCHAR},
       <if test="productId != null">
         #{productId,jdbcType=VARCHAR},
       </if>

@@ -135,16 +135,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.CmsSubject">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+<!--<selectKey keyProperty="id" resultType="string" order="BEFORE">       select replace(uuid(), '-', '') as id from dual     </selectKey>-->
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
-    insert into cms_subject (category_id, title, pic, 
+    insert into cms_subject (id, category_id, title, pic,
       product_count, recommend_status, create_time, 
       collect_count, read_count, comment_count, 
       album_pics, description, show_status, 
       category_name, forward_count, content
       )
-    values (#{categoryId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR},
       #{productCount,jdbcType=INTEGER}, #{recommendStatus,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{collectCount,jdbcType=INTEGER}, #{readCount,jdbcType=INTEGER}, #{commentCount,jdbcType=INTEGER}, 
       #{albumPics,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{showStatus,jdbcType=INTEGER}, 
@@ -152,11 +153,12 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.CmsSubject">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
     insert into cms_subject
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,
       <if test="categoryId != null">
         category_id,
       </if>
@@ -204,6 +206,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=VARCHAR},
       <if test="categoryId != null">
         #{categoryId,jdbcType=VARCHAR},
       </if>

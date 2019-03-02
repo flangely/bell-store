@@ -105,24 +105,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.UmsPermission">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into ums_permission (pid, name, icon, 
+<selectKey keyProperty="id" resultType="string" order="BEFORE">       select replace(uuid(), '-', '') as id from dual     </selectKey>
+    insert into ums_permission (id, pid, name, icon,
       type, uri, status, 
       create_time, sort, value
       )
-    values (#{pid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR},
       #{type,jdbcType=INTEGER}, #{uri,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{sort,jdbcType=INTEGER}, #{value,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.UmsPermission">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
+<selectKey keyProperty="id" resultType="string" order="BEFORE">       select replace(uuid(), '-', '') as id from dual     </selectKey>
     insert into ums_permission
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,
       <if test="pid != null">
         pid,
       </if>
@@ -152,6 +149,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=VARCHAR},
       <if test="pid != null">
         #{pid,jdbcType=VARCHAR},
       </if>

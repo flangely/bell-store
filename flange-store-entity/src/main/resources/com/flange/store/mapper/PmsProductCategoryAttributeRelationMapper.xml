@@ -98,20 +98,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.PmsProductCategoryAttributeRelation">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
-    insert into pms_product_category_attribute_relation (product_category_id, product_attribute_id
+    insert into pms_product_category_attribute_relation (id, product_category_id, product_attribute_id
       )
-    values (#{productCategoryId,jdbcType=VARCHAR}, #{productAttributeId,jdbcType=VARCHAR}
+    values (#{id,jdbcType=VARCHAR}, #{productCategoryId,jdbcType=VARCHAR}, #{productAttributeId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.PmsProductCategoryAttributeRelation">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
     insert into pms_product_category_attribute_relation
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,
       <if test="productCategoryId != null">
         product_category_id,
       </if>
@@ -120,6 +121,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=VARCHAR},
       <if test="productCategoryId != null">
         #{productCategoryId,jdbcType=VARCHAR},
       </if>

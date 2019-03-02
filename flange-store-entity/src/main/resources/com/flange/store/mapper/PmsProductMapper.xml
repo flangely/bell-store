@@ -156,10 +156,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.PmsProduct">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
-    insert into pms_product (brand_id, product_category_id, feight_template_id, 
+    insert into pms_product (id, brand_id, product_category_id, feight_template_id,
       product_attribute_category_id, name, picture_url, 
       product_sn, delete_status, publish_status, 
       new_status, recommand_status, verify_status, 
@@ -171,7 +171,7 @@
       detail_title, brand_name, product_category_name, 
       description, detail_desc, detail_html
       )
-    values (#{brandId,jdbcType=VARCHAR}, #{productCategoryId,jdbcType=VARCHAR}, #{feightTemplateId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{brandId,jdbcType=VARCHAR}, #{productCategoryId,jdbcType=VARCHAR}, #{feightTemplateId,jdbcType=VARCHAR},
       #{productAttributeCategoryId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{pictureUrl,jdbcType=VARCHAR}, 
       #{productSn,jdbcType=VARCHAR}, #{deleteStatus,jdbcType=INTEGER}, #{publishStatus,jdbcType=INTEGER}, 
       #{newStatus,jdbcType=INTEGER}, #{recommandStatus,jdbcType=INTEGER}, #{verifyStatus,jdbcType=INTEGER}, 
@@ -185,11 +185,12 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.PmsProduct">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
     insert into pms_product
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,
       <if test="brandId != null">
         brand_id,
       </if>
@@ -291,6 +292,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=VARCHAR},
       <if test="brandId != null">
         #{brandId,jdbcType=VARCHAR},
       </if>

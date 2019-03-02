@@ -102,22 +102,25 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.CmsSubjectComment">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+<!--<selectKey keyProperty="id" resultType="string" order="BEFORE">       select replace(uuid(), '-', '') as id from dual     </selectKey>-->
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
-    insert into cms_subject_comment (subject_id, member_nick_name, member_icon, 
+    insert into cms_subject_comment (id, subject_id, member_nick_name, member_icon,
       content, create_time, show_status
       )
-    values (#{subjectId,jdbcType=VARCHAR}, #{memberNickName,jdbcType=VARCHAR}, #{memberIcon,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{subjectId,jdbcType=VARCHAR}, #{memberNickName,jdbcType=VARCHAR}, #{memberIcon,jdbcType=VARCHAR},
       #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{showStatus,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.CmsSubjectComment">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+<!--<selectKey keyProperty="id" resultType="string" order="BEFORE">       select replace(uuid(), '-', '') as id from dual     </selectKey>-->
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
     insert into cms_subject_comment
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,
       <if test="subjectId != null">
         subject_id,
       </if>
@@ -138,6 +141,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=VARCHAR},
       <if test="subjectId != null">
         #{subjectId,jdbcType=VARCHAR},
       </if>

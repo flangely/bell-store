@@ -108,7 +108,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         String bcryptPassword = passwordEncoder.encode(umsAdmin.getPassword());
         umsAdmin.setPassword(bcryptPassword);
 //        umsAdmin.setId(UUID.randomUUID().toString().replace("-", ""));
-        adminMapper.insert(umsAdmin);
+        adminMapper.insertSelective(umsAdmin);
         return umsAdmin;
     }
 

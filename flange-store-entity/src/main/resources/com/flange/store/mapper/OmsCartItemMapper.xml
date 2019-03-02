@@ -118,17 +118,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.OmsCartItem">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
-    insert into oms_cart_item (product_id, product_sku_id, member_id, 
+    insert into oms_cart_item (id, product_id, product_sku_id, member_id,
       quantity, price, sp1, 
       sp2, sp3, product_pic, 
       product_name, product_sub_title, product_sku_code, 
       member_nickname, create_date, modify_date, 
       delete_status, product_category_id, product_sn, 
       product_brand, product_attr)
-    values (#{productId,jdbcType=VARCHAR}, #{productSkuId,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{productSkuId,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR},
       #{quantity,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{sp1,jdbcType=VARCHAR}, 
       #{sp2,jdbcType=VARCHAR}, #{sp3,jdbcType=VARCHAR}, #{productPic,jdbcType=VARCHAR}, 
       #{productName,jdbcType=VARCHAR}, #{productSubTitle,jdbcType=VARCHAR}, #{productSkuCode,jdbcType=VARCHAR}, 
@@ -137,11 +137,12 @@
       #{productBrand,jdbcType=VARCHAR}, #{productAttr,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.OmsCartItem">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
+    <selectKey keyProperty="id" resultType="string" order="BEFORE">
+      select replace(uuid(), '-', '') as id from dual
     </selectKey>
     insert into oms_cart_item
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,
       <if test="productId != null">
         product_id,
       </if>
@@ -204,6 +205,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=VARCHAR},
       <if test="productId != null">
         #{productId,jdbcType=VARCHAR},
       </if>

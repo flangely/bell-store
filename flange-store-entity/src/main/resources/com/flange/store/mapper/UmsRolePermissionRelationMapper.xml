@@ -98,18 +98,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.UmsRolePermissionRelation">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into ums_role_permission_relation (role_id, permission_id)
-    values (#{roleId,jdbcType=VARCHAR}, #{permissionId,jdbcType=VARCHAR})
+<selectKey keyProperty="id" resultType="string" order="BEFORE">       select replace(uuid(), '-', '') as id from dual     </selectKey>
+    insert into ums_role_permission_relation (id, role_id, permission_id)
+    values (#{id,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{permissionId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.UmsRolePermissionRelation">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
+<selectKey keyProperty="id" resultType="string" order="BEFORE">       select replace(uuid(), '-', '') as id from dual     </selectKey>
     insert into ums_role_permission_relation
     <trim prefix="(" suffix=")" suffixOverrides=",">
+        id,
       <if test="roleId != null">
         role_id,
       </if>
@@ -118,6 +115,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+        #{id,jdbcType=VARCHAR},
       <if test="roleId != null">
         #{roleId,jdbcType=VARCHAR},
       </if>
