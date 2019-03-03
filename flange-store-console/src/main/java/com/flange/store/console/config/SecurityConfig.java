@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 //import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -86,9 +88,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        auth.authenticationProvider(daoAuthenticationProvider);
+/*        auth.userDetailsService(userDetailsService())
+                .passwordEncoder(passwordEncoder());*/
     }
+
+/*    public AuthenticationProvider getAuthenticationProvider(){
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence charSequence) {
+                return null;
+            }
+
+            @Override
+            public boolean matches(CharSequence charSequence, String s) {
+                return false;
+            }
+        });
+    }*/
 
     @Bean
     public PasswordEncoder passwordEncoder() {

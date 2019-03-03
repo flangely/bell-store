@@ -108,14 +108,14 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         String bcryptPassword = passwordEncoder.encode(umsAdmin.getPassword());
         umsAdmin.setPassword(bcryptPassword);
 //        umsAdmin.setId(UUID.randomUUID().toString().replace("-", ""));
-        adminMapper.insertSelective(umsAdmin);
+        adminMapper.insert(umsAdmin);
         return umsAdmin;
     }
 
     @Override
     public String login(String username, String password) {
         String token = null;
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, passwordEncoder.encode(password));
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         try {
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -142,7 +142,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         loginLog.setIp(request.getRemoteAddr());
-        loginLog.setUserAgent(request.getHeader("User-Agent"));
+        String client = request.getHeader("User-Agent").length() > 90 ? request.getHeader("User-Agent").substring(0, 90) : request.getHeader("User-Agent");
+        loginLog.setUserAgent(client);
         loginLogMapper.insert(loginLog);
     }
 
