@@ -9,11 +9,10 @@ import java.util.List;
 
 /**
  * 添加更新产品分类的参数
- * Created by macro on 2018/4/26.
  */
 public class PmsProductCategoryParam {
     @ApiModelProperty("父分类的编号")
-    private Long parentId;
+    private String parentId;
     @ApiModelProperty(value = "商品分类名称",required = true)
     @NotEmpty(message = "商品分类名称不能为空")
     private String name;
@@ -35,13 +34,13 @@ public class PmsProductCategoryParam {
     @ApiModelProperty("描述")
     private String description;
     @ApiModelProperty("产品相关筛选属性集合")
-    private List<Long> productAttributeIdList;
+    private List<String> productAttributeIdList;
 
-    public Long getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 
@@ -109,11 +108,11 @@ public class PmsProductCategoryParam {
         this.description = description;
     }
 
-    public List<Long> getProductAttributeIdList() {
+    public List<String> getProductAttributeIdList() {
         return productAttributeIdList;
     }
 
-    public void setProductAttributeIdList(List<Long> productAttributeIdList) {
+    public void setProductAttributeIdList(List<String> productAttributeIdList) {
         this.productAttributeIdList = productAttributeIdList;
     }
 }

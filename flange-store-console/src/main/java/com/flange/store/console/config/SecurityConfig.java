@@ -88,29 +88,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        /*DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService());
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        auth.authenticationProvider(daoAuthenticationProvider);
-/*        auth.userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());*/
+        auth.authenticationProvider(daoAuthenticationProvider);*/
+        auth.userDetailsService(userDetailsService())
+                .passwordEncoder(passwordEncoder());
     }
 
-/*    public AuthenticationProvider getAuthenticationProvider(){
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService());
-        authenticationProvider.setPasswordEncoder(new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence charSequence) {
-                return null;
-            }
-
-            @Override
-            public boolean matches(CharSequence charSequence, String s) {
-                return false;
-            }
-        });
-    }*/
 
     @Bean
     public PasswordEncoder passwordEncoder() {
