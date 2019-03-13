@@ -7,6 +7,7 @@ import com.flange.store.model.UmsRole;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 后台管理员Service
@@ -28,14 +29,16 @@ public interface UmsAdminService {
 
     /**
      * 登录功能
+     *
      * @param username 用户名
      * @param password 密码
      * @return 生成的JWT的token
      */
-    String login(String username,String password);
+    String login(String username, String password);
 
     /**
      * 刷新token的功能
+     *
      * @param oldToken 旧的token
      */
     String refreshToken(String oldToken);
@@ -81,4 +84,5 @@ public interface UmsAdminService {
      * 获取用户所有权限（包括角色权限和+-权限）
      */
     List<UmsPermission> getPermissionList(String adminId);
+
 }

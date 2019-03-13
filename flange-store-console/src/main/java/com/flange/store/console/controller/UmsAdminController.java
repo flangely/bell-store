@@ -3,6 +3,8 @@ package com.flange.store.console.controller;
 import com.flange.store.console.dto.CommonResult;
 import com.flange.store.console.dto.UmsAdminLoginParam;
 import com.flange.store.console.dto.UmsAdminParam;
+import com.flange.store.console.util.JwtTokenUtil;
+import com.flange.store.console.util.VueMenuTreeUtil;
 import com.flange.store.model.UmsAdmin;
 import com.flange.store.model.UmsPermission;
 import com.flange.store.model.UmsRole;
@@ -35,6 +37,9 @@ public class UmsAdminController {
     private String tokenHeader;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -174,5 +179,22 @@ public class UmsAdminController {
     public Object getPermissionList(@PathVariable String adminId){
         List<UmsPermission> permissionList = adminService.getPermissionList(adminId);
         return new CommonResult().success(permissionList);
+    }
+
+    @ApiOperation("获取vue路由参数")
+    @RequestMapping(value = "/getMenu", method = RequestMethod.GET)
+    @ResponseBody
+    public Object getMenus(HttpServletRequest request){
+        String authHeader = request.getHeader(this.tokenHeader);
+        if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
+            String authToken = authHeader.substring(this.tokenHead.length());
+            UmsAdmin admin = adminService.getAdminByUsername(jwtTokenUtil.getUserNameFromToken(authToken));
+            List<UmsPermission> permissions = adminService.getPermissionList(admin.getId());
+            VueMenuTreeUtil menuTreeUtil = new VueMenuTreeUtil();
+            List<Object> treeList = menuTreeUtil.menuList(permissions);
+            return new CommonResult().success(treeList);
+        }else {
+            return new CommonResult().failed();
+        }
     }
 }
