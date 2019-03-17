@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class OmsOrderDeliveryParam {
     @ApiModelProperty("订单id")
-    private Long orderId;
+    private String orderId;
     @ApiModelProperty("物流公司")
     private String deliveryCompany;
     @ApiModelProperty("物流单号")

@@ -45,14 +45,23 @@ public class VueMenuTreeUtil {
         for (UmsPermission permission : menuCommon){
             Map<String, Object> childArray = new LinkedHashMap<>();
             if (permission.getPid().equals(parent.getId())){
-                String[] urls = parent.getUri().split("/");
-                childArray.put("path", urls[permission.getType()]);
-                childArray.put("name", urls[permission.getType()]);
+//                String[] urls = parent.getUri().split("/");
+//                if (permission.getUri().indexOf("/index") > 0){
+//                    childArray.put("path", urls[permission.getType() + 1]);
+//
+//                }else {
+//                    childArray.put("path", urls[permission.getType() + 1]);
+//                }
+                childArray.put("path", permission.getValue());
+                childArray.put("name", permission.getValue());
                 childArray.put("component", permission.getUri());
                 Map<String, Object> childMetaMap = new HashMap<>();
                 childMetaMap.put("title", permission.getName());
                 childMetaMap.put("icon", permission.getIcon());
                 childArray.put("meta", childMetaMap);
+                if(permission.getType() > 1){
+                    childArray.put("hidden", true);
+                }
                 if (!getChild(permission, menuCommon).isEmpty()){
                     childArray.put("children", menuChild(permission));
                 }
@@ -60,6 +69,7 @@ public class VueMenuTreeUtil {
                 lists.add(childArray);
             }
         }
+
         return lists;
     }
 

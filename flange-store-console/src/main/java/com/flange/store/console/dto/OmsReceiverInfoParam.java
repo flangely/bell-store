@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OmsReceiverInfoParam {
-    private Long orderId;
+    private String orderId;
     private String receiverName;
     private String receiverPhone;
     private String receiverPostCode;
