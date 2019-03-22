@@ -30,4 +30,6 @@ public interface PmsBrandService {
     int updateShowStatus(List<String> ids, Integer showStatus);
 
     int updateFactoryStatus(List<String> ids, Integer factoryStatus);
+
+    List<PmsBrand> getSome(List<String> ids);
 }

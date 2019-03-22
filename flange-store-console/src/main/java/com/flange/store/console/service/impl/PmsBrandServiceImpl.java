@@ -8,7 +8,6 @@ import com.flange.store.model.PmsBrand;
 import com.flange.store.model.PmsBrandExample;
 import com.flange.store.model.PmsProduct;
 import com.flange.store.model.PmsProductExample;
-import com.flange.store.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,8 +71,7 @@ public class PmsBrandServiceImpl implements PmsBrandService {
     @Override
     public int deleteBrand(List<String> ids) {
         PmsBrandExample pmsBrandExample = new PmsBrandExample();
-        List<Long> formatIds = IdUtil.strsToLongs(ids);
-        pmsBrandExample.createCriteria().andIdIn(formatIds);
+        pmsBrandExample.createCriteria().andIdIn(ids);
         return brandMapper.deleteByExample(pmsBrandExample);
     }
 
@@ -99,8 +97,7 @@ public class PmsBrandServiceImpl implements PmsBrandService {
         PmsBrand pmsBrand = new PmsBrand();
         pmsBrand.setShowStatus(showStatus);
         PmsBrandExample pmsBrandExample = new PmsBrandExample();
-        List<Long> formatIds = IdUtil.strsToLongs(ids);
-        pmsBrandExample.createCriteria().andIdIn(formatIds);
+        pmsBrandExample.createCriteria().andIdIn(ids);
         return brandMapper.updateByExampleSelective(pmsBrand, pmsBrandExample);
     }
 
@@ -109,9 +106,18 @@ public class PmsBrandServiceImpl implements PmsBrandService {
         PmsBrand pmsBrand = new PmsBrand();
         pmsBrand.setFactoryStatus(factoryStatus);
         PmsBrandExample pmsBrandExample = new PmsBrandExample();
-        List<Long> formatIds = IdUtil.strsToLongs(ids);
-        pmsBrandExample.createCriteria().andIdIn(formatIds);
+        pmsBrandExample.createCriteria().andIdIn(ids);
         return brandMapper.updateByExampleSelective(pmsBrand, pmsBrandExample);
+    }
+
+    @Override
+    public List<PmsBrand> getSome(List<String> ids) {
+        PmsBrand pmsBrand = new PmsBrand();
+        pmsBrand.setFactoryStatus(0);
+        PmsBrandExample example = new PmsBrandExample();
+        example.createCriteria().andIdIn(ids);
+        int i = brandMapper.updateByExample(pmsBrand, example);
+        return null;
     }
 
 }

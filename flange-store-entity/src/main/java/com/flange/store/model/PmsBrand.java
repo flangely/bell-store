@@ -2,12 +2,6 @@ package com.flange.store.model;
 
 import java.io.Serializable;
 
-/**
- * @author flangely
- * @create 2019-03-22
- * <p>出版社模型
- * 10:33 AM
- */
 public class PmsBrand implements Serializable {
     private String id;
 

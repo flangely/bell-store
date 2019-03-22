@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -137,5 +138,15 @@ public class PmsBrandController {
         } else {
             return new CommonResult().failed();
         }
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    @ResponseBody
+    public Object test(){
+        List<String> ids = new ArrayList<>();
+        ids.add("1");
+        ids.add("2");
+        ids.add("4");
+        return brandService.getSome(ids);
     }
 }

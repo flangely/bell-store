@@ -2,16 +2,9 @@ package com.flange.store.mapper;
 
 import com.flange.store.model.PmsBrand;
 import com.flange.store.model.PmsBrandExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
-/**
- * @author flangely
- * @create 2019-03-22
- * <p>
- * 10:35 AM
- */
 public interface PmsBrandMapper {
     int countByExample(PmsBrandExample example);
 
