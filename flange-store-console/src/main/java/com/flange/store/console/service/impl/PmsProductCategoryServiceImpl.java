@@ -1,5 +1,6 @@
 package com.flange.store.console.service.impl;
 
+import com.flange.store.console.dao.PmsProductCategoryDao;
 import com.flange.store.console.dto.PmsProductCategoryParam;
 import com.flange.store.console.dto.PmsProductCategoryWithChildrenItem;
 import com.flange.store.console.service.PmsProductCategoryService;
@@ -30,6 +31,9 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Autowired
     private PmsProductMapper productMapper;
+
+    @Autowired
+    private PmsProductCategoryDao productCategoryDao;
 
 
     @Override
@@ -96,7 +100,7 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public List<PmsProductCategoryWithChildrenItem> listWithChildren() {
-        return null;
+        return productCategoryDao.listWithChildren();
     }
 
     /**

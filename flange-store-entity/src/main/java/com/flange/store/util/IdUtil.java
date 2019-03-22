@@ -1,7 +1,9 @@
 package com.flange.store.util;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author flangely
@@ -30,6 +32,14 @@ public class IdUtil {
         Date now = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         return format.format(now) + (int)((Math.random()*9+1)*100000);
+    }
+
+    public static List<Long> strsToLongs(List<String> stringList){
+        List<Long> ids = new ArrayList<>();
+        for (String id : stringList){
+            ids.add(Long.parseLong(id));
+        }
+        return ids;
     }
 
 }
