@@ -1,6 +1,5 @@
 package com.flange.store.console.service;
 
-import com.flange.store.model.UmsAdmin;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
