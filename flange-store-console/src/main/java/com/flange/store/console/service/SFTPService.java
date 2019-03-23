@@ -11,6 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface SFTPService {
 
-    public String saveFile(MultipartFile multipartFile, UmsAdmin user);
+    public String saveFile(MultipartFile multipartFile);
 
 }

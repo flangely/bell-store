@@ -126,7 +126,7 @@ public class SFTPUtil {
      * @param remoteFilePath    远程文件路径 /tmp/xxx.txt ||xxx.txt.zip
      * @param uploadFilePath    要上传的文件 如：D:\\test\\xxx.txt
      */
-    public void uploadFile(String remoteFilePath, String uploadFilePath) {
+    public int uploadFile(String remoteFilePath, String uploadFilePath) {
         info(" begin uploadFile from:" + uploadFilePath +
                 ", to: " + remoteFilePath);
         FileInputStream in = null;
@@ -161,8 +161,10 @@ public class SFTPUtil {
             sftp.put(in, remoteFileName);
         } catch (FileNotFoundException e) {
             error("文件不存在-->" + uploadFilePath);
+            return -1;
         } catch (SftpException e) {
             error("sftp异常-->", e);
+            return -1;
         } finally {
             if (in != null) {
                 try {
@@ -174,6 +176,7 @@ public class SFTPUtil {
             disconnect();
         }
         info(">>>>>>>>>uploadFile--ftp上传文件结束>>>>>>>>>>>>>");
+        return 1;
     }
 
     public void delete(String directory, String deleteFile) throws SftpException{

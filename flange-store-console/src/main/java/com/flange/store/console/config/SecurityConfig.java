@@ -32,6 +32,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import java.util.List;
 
@@ -62,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${sftp.port}")
     private int sftpPort;
+
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -146,6 +149,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public SFTPUtil getSFTPUtil(){
         return new SFTPUtil(sftpUsername, sftpPassword, sftpHost, sftpPort);
     }
+
 
     /**
      * 允许跨域调用的过滤器
