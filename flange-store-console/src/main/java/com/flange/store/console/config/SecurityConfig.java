@@ -7,15 +7,17 @@ import com.flange.store.console.component.RestfulAccessDeniedHandler;
 import com.flange.store.console.service.UmsAdminService;
 import com.flange.store.model.UmsAdmin;
 import com.flange.store.model.UmsPermission;
+import com.flange.store.util.SFTPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 //import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+//import org.springframework.security.authentication.AuthenticationProvider;
+//import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,7 +38,7 @@ import java.util.List;
 
 /**
  * SpringSecurity的配置
- * Created by macro on 2018/4/26.
+ *
  */
 @Configuration
 @EnableWebSecurity
@@ -48,6 +50,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
     @Autowired
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+    @Value("${sftp.username}")
+    private String sftpUsername;
+
+    @Value("${sftp.password}")
+    private String sftpPassword;
+
+    @Value("${sftp.host}")
+    private String sftpHost;
+
+    @Value("${sftp.port}")
+    private int sftpPort;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -116,7 +130,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -126,6 +139,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter(){
         return new JwtAuthenticationTokenFilter();
+    }
+
+
+    @Bean
+    public SFTPUtil getSFTPUtil(){
+        return new SFTPUtil(sftpUsername, sftpPassword, sftpHost, sftpPort);
     }
 
     /**

@@ -10,6 +10,12 @@
 	<description>database operate</description>
 
 	<dependencies>
+		<!--SFTP文件上传下载删除-->
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.54</version>
+		</dependency>
 		<!-- MyBatis 生成器 -->
 		<dependency>
 			<groupId>org.mybatis.generator</groupId>
