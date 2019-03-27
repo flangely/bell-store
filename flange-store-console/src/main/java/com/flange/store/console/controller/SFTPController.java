@@ -29,7 +29,7 @@ public class SFTPController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
-    public Object uploadImg(@RequestParam(value = "imgFile") MultipartFile file){
+    public Object uploadImg(@RequestParam(value = "file") MultipartFile file){
 
         try {
             String imgUrl = sftpService.saveFile(file);
