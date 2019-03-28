@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 产品查询参数
- * Created by macro on 2018/4/27.
+ * Created by flangely on 2019/3/27.
  */
 public class PmsProductQueryParam {
     @ApiModelProperty("上架状态")
@@ -16,9 +16,9 @@ public class PmsProductQueryParam {
     @ApiModelProperty("商品货号")
     private String productSn;
     @ApiModelProperty("商品分类编号")
-    private Long productCategoryId;
+    private String productCategoryId;
     @ApiModelProperty("商品品牌编号")
-    private Long brandId;
+    private String brandId;
 
     public Integer getPublishStatus() {
         return publishStatus;
@@ -52,19 +52,19 @@ public class PmsProductQueryParam {
         this.productSn = productSn;
     }
 
-    public Long getProductCategoryId() {
+    public String getProductCategoryId() {
         return productCategoryId;
     }
 
-    public void setProductCategoryId(Long productCategoryId) {
+    public void setProductCategoryId(String productCategoryId) {
         this.productCategoryId = productCategoryId;
     }
 
-    public Long getBrandId() {
+    public String getBrandId() {
         return brandId;
     }
 
-    public void setBrandId(Long brandId) {
+    public void setBrandId(String brandId) {
         this.brandId = brandId;
     }
 }

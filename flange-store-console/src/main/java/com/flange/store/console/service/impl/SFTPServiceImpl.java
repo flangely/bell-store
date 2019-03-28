@@ -32,7 +32,7 @@ public class SFTPServiceImpl implements SFTPService {
     private String imgUrlPrefix;
 
     @Override
-    public String saveFile(MultipartFile multipartFile) {
+    public synchronized String saveFile(MultipartFile multipartFile) {
         CommonsMultipartFile cmFile = (CommonsMultipartFile) multipartFile;
         DiskFileItem fileItem = (DiskFileItem) cmFile.getFileItem();
         String s = fileItem.getName();
