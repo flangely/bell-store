@@ -1,5 +1,7 @@
 package com.flange.store.console.dto;
 
+import java.util.List;
+
 /**
  * @author flangely
  * @create 2019-03-22

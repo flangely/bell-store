@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,8 +27,8 @@ import java.util.List;
 @Service
 public class PmsProductServiceImpl implements PmsProductService {
 
-    @Autowired
-    private SFTPUtil sftpUtil;
+//    @Autowired
+//    private SFTPUtil sftpUtil;
 
 
     @Autowired
@@ -53,6 +54,12 @@ public class PmsProductServiceImpl implements PmsProductService {
         PmsProductResult result = new PmsProductResult();
         BeanUtils.copyProperties(product, result);
         result.setCateParentId(productCategoryService.getItem(result.getProductCategoryId()).getParentId());
+//        List<String> pic = new ArrayList<>();
+//        String[] picArray = result.getAlbumPics().split(",");
+//        for (String str : picArray){
+//            pic.add(str);
+//        }
+//        result.setPic(pic);
         return result;
     }
 

@@ -2,14 +2,12 @@ package com.flange.store.console.controller;
 
 import com.flange.store.console.dto.CommonResult;
 import com.flange.store.console.service.SFTPService;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -27,6 +25,7 @@ public class SFTPController {
     @Autowired
     private SFTPService sftpService;
 
+    @ApiOperation("图片上传")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
     public Object uploadImg(@RequestParam(value = "file") MultipartFile file){
@@ -38,6 +37,21 @@ public class SFTPController {
             LOG.error(e.getMessage());
             return new CommonResult().failed();
         }
+    }
+
+    @ApiOperation("删除图片")
+    @RequestMapping(value = "/delete/{name}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Object deleteImg(@PathVariable String name){
+        try {
+            int count = sftpService.delFile(name);
+            return new CommonResult().success(count);
+
+        }catch (Exception e){
+            LOG.error(e.getMessage());
+            return new CommonResult().failed();
+        }
+
     }
 
 }

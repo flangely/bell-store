@@ -46,4 +46,11 @@ public class SFTPServiceImpl implements SFTPService {
 
     }
 
+    @Override
+    public int delFile(String fileName) throws Exception{
+        sftpUtil.delete(sftpLocation, fileName);
+        return 1;
+    }
+
+
 }

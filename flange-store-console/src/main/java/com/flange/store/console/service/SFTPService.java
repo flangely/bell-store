@@ -12,4 +12,6 @@ public interface SFTPService {
 
     public String saveFile(MultipartFile multipartFile);
 
+    public int delFile(String fileName) throws Exception;
+
 }
