@@ -8,6 +8,7 @@ import com.flange.store.console.service.PmsProductService;
 import com.flange.store.mapper.PmsProductMapper;
 import com.flange.store.model.PmsProduct;
 import com.flange.store.model.PmsProductExample;
+import com.flange.store.util.IdUtil;
 import com.flange.store.util.SFTPUtil;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
@@ -27,10 +28,6 @@ import java.util.List;
 @Service
 public class PmsProductServiceImpl implements PmsProductService {
 
-//    @Autowired
-//    private SFTPUtil sftpUtil;
-
-
     @Autowired
     private PmsProductMapper productMapper;
 
@@ -42,7 +39,7 @@ public class PmsProductServiceImpl implements PmsProductService {
     public int create(PmsProductParam productParam) {
         int count;
         PmsProduct product = productParam;
-        product.setId(null);
+        product.setId(IdUtil.getGeneralID());
         productMapper.insertSelective(product);
         count = 1;
         return count;
@@ -54,12 +51,6 @@ public class PmsProductServiceImpl implements PmsProductService {
         PmsProductResult result = new PmsProductResult();
         BeanUtils.copyProperties(product, result);
         result.setCateParentId(productCategoryService.getItem(result.getProductCategoryId()).getParentId());
-//        List<String> pic = new ArrayList<>();
-//        String[] picArray = result.getAlbumPics().split(",");
-//        for (String str : picArray){
-//            pic.add(str);
-//        }
-//        result.setPic(pic);
         return result;
     }
 

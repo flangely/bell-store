@@ -137,9 +137,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.OmsOrder">
-    <selectKey keyProperty="id" resultType="string" order="BEFORE">
-      select replace(uuid(), '-', '') as id from dual
-    </selectKey>
+    <!--<selectKey keyProperty="id" resultType="string" order="BEFORE">-->
+      <!--select replace(uuid(), '-', '') as id from dual-->
+    <!--</selectKey>-->
     insert into oms_order (id, member_id, coupon_id, order_sn,
       create_time, member_username, total_amount, 
       pay_amount, freight_amount, discount_amount, 
@@ -168,9 +168,9 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.OmsOrder">
-    <selectKey keyProperty="id" resultType="string" order="BEFORE">
-      select replace(uuid(), '-', '') as id from dual
-    </selectKey>
+    <!--<selectKey keyProperty="id" resultType="string" order="BEFORE">-->
+      <!--select replace(uuid(), '-', '') as id from dual-->
+    <!--</selectKey>-->
     insert into oms_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
         id,

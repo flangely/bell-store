@@ -156,9 +156,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.flange.store.model.PmsProduct">
-    <selectKey keyProperty="id" resultType="string" order="BEFORE">
-      select replace(uuid(), '-', '') as id from dual
-    </selectKey>
+    <!--<selectKey keyProperty="id" resultType="string" order="BEFORE">-->
+      <!--select replace(uuid(), '-', '') as id from dual-->
+    <!--</selectKey>-->
     insert into pms_product (id, brand_id, product_category_id, feight_template_id,
       product_attribute_category_id, name, picture_url, 
       product_sn, delete_status, publish_status, 
@@ -185,9 +185,9 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.flange.store.model.PmsProduct">
-    <selectKey keyProperty="id" resultType="string" order="BEFORE">
-      select replace(uuid(), '-', '') as id from dual
-    </selectKey>
+    <!--<selectKey keyProperty="id" resultType="string" order="BEFORE">-->
+      <!--select replace(uuid(), '-', '') as id from dual-->
+    <!--</selectKey>-->
     insert into pms_product
     <trim prefix="(" suffix=")" suffixOverrides=",">
         id,
