@@ -40,8 +40,6 @@ public class PmsProductServiceImpl implements PmsProductService {
         int count;
         PmsProduct product = productParam;
         product.setId(IdUtil.getGeneralID());
-//        String pic = productParam.getAlbumPics().split(",")[0];
-//        product.setPictureUrl(pic);
         productMapper.insertSelective(product);
         count = 1;
         return count;
@@ -61,8 +59,6 @@ public class PmsProductServiceImpl implements PmsProductService {
         int count;
         PmsProduct product = productParam;
         product.setId(id);
-//        String pic = productParam.getAlbumPics().split(",")[0];
-//        product.setPictureUrl(pic);
         productMapper.updateByPrimaryKeySelective(product);
         count = 1;
         return count;
