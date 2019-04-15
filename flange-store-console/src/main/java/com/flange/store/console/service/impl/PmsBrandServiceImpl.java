@@ -8,6 +8,7 @@ import com.flange.store.model.PmsBrand;
 import com.flange.store.model.PmsBrandExample;
 import com.flange.store.model.PmsProduct;
 import com.flange.store.model.PmsProductExample;
+import com.flange.store.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class PmsBrandServiceImpl implements PmsBrandService {
     public int createBrand(PmsBrandParam pmsBrandParam) {
         PmsBrand pmsBrand = new PmsBrand();
         BeanUtils.copyProperties(pmsBrandParam, pmsBrand);
+        pmsBrand.setId(IdUtil.getGeneralID());
         //如果创建时首字母为空，取名称的第一个为首字母
         if (StringUtils.isEmpty(pmsBrand.getFirstLetter())) {
             pmsBrand.setFirstLetter(pmsBrand.getName().substring(0, 1));

@@ -82,7 +82,7 @@ public class PmsProductCategoryController {
     }
 
     @ApiOperation("删除商品分类")
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:productCategory:delete')")
     public Object delete(@PathVariable String id) {
