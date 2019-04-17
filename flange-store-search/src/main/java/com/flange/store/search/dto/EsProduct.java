@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 /**
  * @author flangely
  * @create 2019-04-16
- * <p>
+ * <p> ES商品搜索载体
  * 2:55 PM
  */
 @Document(indexName = "pms", type = "product",shards = 1,replicas = 0)
