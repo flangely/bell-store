@@ -105,7 +105,7 @@ CREATE TABLE `oms_cart_item` (
   `delete_status` int(1) DEFAULT NULL COMMENT '是否删除:0->否，1->是',
   `product_category_id` varchar(32) DEFAULT NULL COMMENT '商品分类',
   `product_sn` varchar(200) DEFAULT NULL,
-  `product_brand` varchar(200) DEFAULT NULL COMMENT '商品品牌',
+  `product_brand` varchar(200) DEFAULT NULL COMMENT '商品出版社',
   `product_attr` varchar(500) DEFAULT NULL COMMENT '商品销售属性:[{"key":"颜色","value":"颜色"},{"key":"容量","value":"4G"}]',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购物车表';
@@ -231,7 +231,7 @@ CREATE TABLE `oms_order_return_apply` (
   `handle_time` datetime DEFAULT NULL COMMENT '处理时间',
   `product_pic` varchar(500) DEFAULT NULL COMMENT '商品图片',
   `product_name` varchar(200) DEFAULT NULL COMMENT '商品名称',
-  `product_brand` varchar(200) DEFAULT NULL COMMENT '商品品牌',
+  `product_brand` varchar(200) DEFAULT NULL COMMENT '商品出版社',
   `product_attr` varchar(500) DEFAULT NULL COMMENT '商品销售属性：颜色：红色；尺码：xl;',
   `product_count` int(11) DEFAULT NULL COMMENT '退货数量',
   `product_price` decimal(10,2) DEFAULT NULL COMMENT '商品单价',
@@ -308,15 +308,15 @@ CREATE TABLE `pms_brand` (
   `name` varchar(64) DEFAULT NULL,
   `first_letter` varchar(8) DEFAULT NULL COMMENT '首字母',
   `sort` int(11) DEFAULT NULL,
-  `factory_status` int(1) DEFAULT NULL COMMENT '是否为品牌制造商：0->不是；1->是',
+  `factory_status` int(1) DEFAULT NULL COMMENT '是否为出版社制造商：0->不是；1->是',
   `show_status` int(1) DEFAULT NULL,
   `product_count` int(11) DEFAULT NULL COMMENT '产品数量',
   `product_comment_count` int(11) DEFAULT NULL COMMENT '产品评论数量',
-  `logo` varchar(255) DEFAULT NULL COMMENT '品牌logo',
+  `logo` varchar(255) DEFAULT NULL COMMENT '出版社logo',
   `big_pic` varchar(255) DEFAULT NULL COMMENT '专区大图',
-  `brand_story` text COMMENT '品牌故事',
+  `brand_story` text COMMENT '出版社故事',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='品牌表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='出版社表';
 
 -- ----------------------------
 -- Records of pms_brand
@@ -391,7 +391,7 @@ CREATE TABLE `pms_feight_template` (
 DROP TABLE IF EXISTS `pms_product`;
 CREATE TABLE `pms_product` (
   `id` varchar(32) NOT NULL,
-  `brand_id` varchar(32) DEFAULT NULL COMMENT '品牌id',
+  `brand_id` varchar(32) DEFAULT NULL COMMENT '出版社id',
   `product_category_id` varchar(32) DEFAULT NULL COMMENT '商品分类id',
   `feight_template_id` varchar(32) DEFAULT NULL COMMENT '运费计算类型id',
   `product_attribute_category_id` varchar(32) DEFAULT NULL COMMENT '商品参数分类',
@@ -422,7 +422,7 @@ CREATE TABLE `pms_product` (
   `detail_title` varchar(255) DEFAULT NULL,
   `detail_desc` mediumtext COMMENT '商品详细介绍',
   `detail_html` longtext COMMENT '产品详情网页内容',
-  `brand_name` varchar(255) DEFAULT NULL COMMENT '品牌名称',
+  `brand_name` varchar(255) DEFAULT NULL COMMENT '出版社名称',
   `product_category_name` varchar(255) DEFAULT NULL COMMENT '商品分类名称',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品信息表';

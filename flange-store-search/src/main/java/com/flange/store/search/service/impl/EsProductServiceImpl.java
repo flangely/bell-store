@@ -168,7 +168,7 @@ public class EsProductServiceImpl implements EsProductService {
             String keyword = esProduct.getName();
             String brandId = esProduct.getBrandId();
             String productCategoryId = esProduct.getProductCategoryId();
-            //根据商品标题、品牌、分类进行搜索
+            //根据商品标题、出版社、分类进行搜索
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("name", keyword),
                     ScoreFunctionBuilders.weightFactorFunction(8)));
@@ -204,7 +204,7 @@ public class EsProductServiceImpl implements EsProductService {
         }else{
             builder.withQuery(QueryBuilders.multiMatchQuery(keyword,"name","subTitle","keywords"));
         }
-        //聚合搜索品牌名称
+        //聚合搜索出版社名称
         builder.addAggregation(AggregationBuilders.terms("brandNames").field("brandName"));
         //集合搜索分类名称
         builder.addAggregation(AggregationBuilders.terms("productCategoryNames").field("productCategoryName"));
@@ -231,7 +231,7 @@ public class EsProductServiceImpl implements EsProductService {
     private EsProductRelatedInfo convertProductRelatedInfo(SearchResponse response) {
         EsProductRelatedInfo productRelatedInfo = new EsProductRelatedInfo();
         Map<String, Aggregation> aggregationMap = response.getAggregations().getAsMap();
-        //设置品牌
+        //设置出版社
         Aggregation brandNames = aggregationMap.get("brandNames");
         List<String> brandNameList = new ArrayList<>();
         for(int i = 0; i<((Terms) brandNames).getBuckets().size(); i++){

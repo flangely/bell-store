@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author flangely
  * @create 2019-03-22
- * <p>出版社（商品品牌）Service
+ * <p>出版社（商品出版社）Service
  * 10:42 AM
  */
 public interface PmsBrandService {

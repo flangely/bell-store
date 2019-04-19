@@ -56,7 +56,7 @@ public class PmsBrandServiceImpl implements PmsBrandService {
         if (StringUtils.isEmpty(pmsBrand.getFirstLetter())) {
             pmsBrand.setFirstLetter(pmsBrand.getName().substring(0, 1));
         }
-        //更新品牌时要更新商品中的品牌名称
+        //更新出版社时要更新商品中的出版社名称
         PmsProduct product = new PmsProduct();
         product.setBrandName(pmsBrand.getName());
         PmsProductExample example = new PmsProductExample();

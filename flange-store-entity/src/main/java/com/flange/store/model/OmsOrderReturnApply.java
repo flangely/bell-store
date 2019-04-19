@@ -94,7 +94,7 @@ public class OmsOrderReturnApply implements Serializable {
     private String productName;
 
     /**
-     * 商品品牌
+     * 商品出版社
      *
      * @mbggenerated
      */

@@ -1,7 +1,7 @@
 package com.flange.store.console.dto;
 
 /**
- * Created by macro on 2018/5/17.
+ * Created by flangely on 2018/5/17.
  */
 public class OssCallbackParam {
     private String callbackUrl;

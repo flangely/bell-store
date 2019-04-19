@@ -17,7 +17,7 @@ public class PmsProductQueryParam {
     private String productSn;
     @ApiModelProperty("商品分类编号")
     private String productCategoryId;
-    @ApiModelProperty("商品品牌编号")
+    @ApiModelProperty("商品出版社编号")
     private String brandId;
 
     public Integer getPublishStatus() {

@@ -2,7 +2,7 @@ package com.flange.store.console.dto;
 
 /**
  * 获取OSS上传授权返回结果
- * Created by macro on 2018/5/17.
+ * Created by flangely on 2018/5/17.
  */
 public class OssPolicyResult {
     private String accessKeyId;

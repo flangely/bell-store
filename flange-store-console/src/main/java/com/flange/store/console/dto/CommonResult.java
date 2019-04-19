@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * 通用返回对象
- * Created by macro on 2018/4/26.
+ * Created by flangely on 2018/4/26.
  */
 public class CommonResult {
     //操作成功

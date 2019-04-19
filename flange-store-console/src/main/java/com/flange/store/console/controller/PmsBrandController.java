@@ -22,13 +22,13 @@ import java.util.List;
  * 11:07 AM
  */
 @Controller
-@Api(tags = "PmsBrandController",description = "商品品牌管理")
+@Api(tags = "PmsBrandController",description = "商品出版社管理")
 @RequestMapping("/brand")
 public class PmsBrandController {
     @Autowired
     private PmsBrandService brandService;
 
-    @ApiOperation(value = "获取全部品牌列表")
+    @ApiOperation(value = "获取全部出版社列表")
     @RequestMapping(value = "/listAll", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:read')")
@@ -36,7 +36,7 @@ public class PmsBrandController {
         return new CommonResult().success(brandService.listAllBrand());
     }
 
-    @ApiOperation(value = "添加品牌")
+    @ApiOperation(value = "添加出版社")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:create')")
@@ -51,7 +51,7 @@ public class PmsBrandController {
         return commonResult;
     }
 
-    @ApiOperation(value = "更新品牌")
+    @ApiOperation(value = "更新出版社")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:update')")
@@ -68,7 +68,7 @@ public class PmsBrandController {
         return commonResult;
     }
 
-    @ApiOperation(value = "删除品牌")
+    @ApiOperation(value = "删除出版社")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:delete')")
@@ -81,7 +81,7 @@ public class PmsBrandController {
         }
     }
 
-    @ApiOperation(value = "根据品牌名称分页获取品牌列表")
+    @ApiOperation(value = "根据出版社名称分页获取出版社列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:read')")
@@ -91,7 +91,7 @@ public class PmsBrandController {
         return new CommonResult().pageSuccess(brandService.listBrand(keyword, pageNum, pageSize));
     }
 
-    @ApiOperation(value = "根据编号查询品牌信息")
+    @ApiOperation(value = "根据编号查询出版社信息")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:read')")
@@ -99,7 +99,7 @@ public class PmsBrandController {
         return new CommonResult().success(brandService.getBrand(id));
     }
 
-    @ApiOperation(value = "批量删除品牌")
+    @ApiOperation(value = "批量删除出版社")
     @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:delete')")

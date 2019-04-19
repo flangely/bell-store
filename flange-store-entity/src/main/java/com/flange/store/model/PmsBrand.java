@@ -17,7 +17,7 @@ public class PmsBrand implements Serializable {
     private Integer sort;
 
     /**
-     * 是否为品牌制造商：0->不是；1->是
+     * 是否为出版社制造商：0->不是；1->是
      *
      * @mbggenerated
      */
@@ -40,7 +40,7 @@ public class PmsBrand implements Serializable {
     private Integer productCommentCount;
 
     /**
-     * 品牌logo
+     * 出版社logo
      *
      * @mbggenerated
      */
@@ -54,7 +54,7 @@ public class PmsBrand implements Serializable {
     private String bigPic;
 
     /**
-     * 品牌故事
+     * 出版社故事
      *
      * @mbggenerated
      */

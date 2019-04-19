@@ -7,7 +7,7 @@ public class PmsProduct implements Serializable {
     private String id;
 
     /**
-     * 品牌id
+     * 出版社id
      *
      * @mbggenerated
      */
@@ -183,7 +183,7 @@ public class PmsProduct implements Serializable {
     private String detailTitle;
 
     /**
-     * 品牌名称
+     * 出版社名称
      *
      * @mbggenerated
      */

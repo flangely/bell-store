@@ -98,7 +98,7 @@ public class EsProductController {
         return new CommonResult().pageSuccess(esProductPage);
     }
 
-    @ApiOperation(value = "获取搜索的相关品牌、分类及筛选属性")
+    @ApiOperation(value = "获取搜索的相关出版社、分类及筛选属性")
     @RequestMapping(value = "/search/relate",method = RequestMethod.GET)
     @ResponseBody
     public Object searchRelatedInfo(@RequestParam(required = false) String keyword){

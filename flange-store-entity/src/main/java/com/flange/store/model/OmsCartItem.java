@@ -114,7 +114,7 @@ public class OmsCartItem implements Serializable {
     private String productSn;
 
     /**
-     * 商品品牌
+     * 商品出版社
      *
      * @mbggenerated
      */

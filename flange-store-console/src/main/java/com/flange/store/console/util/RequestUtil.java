@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * request工具类
- * Created by macro on 2018/4/26.
+ * Created by flangely on 2018/4/26.
  */
 public class RequestUtil {
 

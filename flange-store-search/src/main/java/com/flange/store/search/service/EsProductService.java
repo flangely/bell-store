@@ -50,7 +50,7 @@ public interface EsProductService {
     Page<EsProduct> recommend(String id, Integer pageNum, Integer pageSize);
 
     /**
-     * 获取搜索词相关品牌、分类、属性
+     * 获取搜索词相关出版社、分类、属性
      */
     EsProductRelatedInfo searchRelatedInfo(String keyword);
 }

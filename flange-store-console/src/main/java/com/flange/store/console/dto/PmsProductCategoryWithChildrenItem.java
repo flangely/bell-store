@@ -5,7 +5,7 @@ import com.flange.store.model.PmsProductCategory;
 import java.util.List;
 
 /**
- * Created by macro on 2018/5/25.
+ * Created by flangely on 2018/5/25.
  */
 public class PmsProductCategoryWithChildrenItem extends PmsProductCategory {
     private List<PmsProductCategory> children;
