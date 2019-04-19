@@ -17,7 +17,7 @@ import org.springframework.validation.BindingResult;
 @Component
 @Order(2)
 public class BindingResultAspect {
-    @Pointcut("execution(public * com.macro.mall.controller.*.*(..))")
+    @Pointcut("execution(public * com.flange.store.console.controller.*.*(..))")
     public void BindingResult() {
     }
 
