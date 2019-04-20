@@ -143,7 +143,13 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
 
     @Override
     public CommonResult paySuccess(String orderId) {
-        return null;
+        //修改订单支付状态
+        OmsOrder order = new OmsOrder();
+        order.setId(orderId);
+        order.setStatus(1);
+        order.setPaymentTime(new Date());
+        int count = orderMapper.updateByPrimaryKeySelective(order);
+        return new CommonResult().success("支付成功",count);
     }
 
     @Override

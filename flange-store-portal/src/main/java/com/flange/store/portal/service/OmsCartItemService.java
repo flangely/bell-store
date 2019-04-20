@@ -2,7 +2,6 @@ package com.flange.store.portal.service;
 
 import com.flange.store.model.OmsCartItem;
 import com.flange.store.portal.domain.CartProduct;
-import com.flange.store.portal.domain.CartPromotionItem;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
