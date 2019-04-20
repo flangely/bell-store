@@ -2,6 +2,7 @@ package com.flange.store.portal.service;
 
 import com.flange.store.model.OmsCartItem;
 import com.flange.store.portal.domain.CartProduct;
+import com.flange.store.portal.domain.CartPromotionItem;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,6 +24,12 @@ public interface OmsCartItemService {
      * 根据会员编号获取购物车列表
      */
     List<OmsCartItem> list(String memberId);
+
+
+//    /**
+//     * 获取包含促销活动信息的购物车列表
+//     */
+//    List<CartPromotionItem> listPromotion(Long memberId);
     
 
     /**

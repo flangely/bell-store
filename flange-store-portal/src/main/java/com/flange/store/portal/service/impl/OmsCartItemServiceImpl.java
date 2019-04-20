@@ -6,12 +6,14 @@ import com.flange.store.model.OmsCartItemExample;
 import com.flange.store.model.UmsMember;
 import com.flange.store.portal.dao.PortalProductDao;
 import com.flange.store.portal.domain.CartProduct;
+import com.flange.store.portal.domain.CartPromotionItem;
 import com.flange.store.portal.service.OmsCartItemService;
 import com.flange.store.portal.service.UmsMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -59,6 +61,7 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
         example.createCriteria().andMemberIdEqualTo(memberId).andDeleteStatusEqualTo(0);
         return cartItemMapper.selectByExample(example);
     }
+
 
     @Override
     public int updateQuantity(String id, String memberId, Integer quantity) {

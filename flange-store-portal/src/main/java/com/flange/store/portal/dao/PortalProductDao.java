@@ -3,8 +3,6 @@ package com.flange.store.portal.dao;
 import com.flange.store.portal.domain.CartProduct;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 /**
  * @author flangely
  * @create 2019-04-20

@@ -40,6 +40,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     @Value("${authCode.expire.seconds}")
     private Long AUTH_CODE_EXPIRE_SECONDS;
 
+
     @Override
     public UmsMember getByUsername(String username) {
         UmsMemberExample example = new UmsMemberExample();
@@ -74,7 +75,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         UmsMember umsMember = new UmsMember();
         umsMember.setUserName(username);
         umsMember.setPhone(telephone);
-        umsMember.setUserPassword(password);
+        umsMember.setUserPassword(passwordEncoder.encode(password));
         umsMember.setCreateTime(new Date());
         umsMember.setStatus(1);
         memberMapper.insert(umsMember);
@@ -108,7 +109,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
             return new CommonResult().failed("验证码错误");
         }
         UmsMember umsMember = memberList.get(0);
-        umsMember.setUserPassword(password);
+        umsMember.setUserPassword(passwordEncoder.encode(password));
         memberMapper.updateByPrimaryKeySelective(umsMember);
         return new CommonResult().success("密码修改成功",null);
     }

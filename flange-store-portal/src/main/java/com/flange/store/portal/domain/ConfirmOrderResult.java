@@ -26,6 +26,14 @@ public class ConfirmOrderResult {
         this.calcAmount = calcAmount;
     }
 
+    public List<UmsMemberReceiveAddress> getMemberReceiveAddressList() {
+        return memberReceiveAddressList;
+    }
+
+    public void setMemberReceiveAddressList(List<UmsMemberReceiveAddress> memberReceiveAddressList) {
+        this.memberReceiveAddressList = memberReceiveAddressList;
+    }
+
     public static class CalcAmount{
         //订单商品总金额
         private BigDecimal totalAmount;
