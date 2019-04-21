@@ -1,22 +1,36 @@
 package com.flange.store.portal.service.impl;
 
+import com.flange.store.mapper.UmsMemberLoginLogMapper;
 import com.flange.store.mapper.UmsMemberMapper;
 import com.flange.store.model.UmsMember;
 import com.flange.store.model.UmsMemberExample;
+import com.flange.store.model.UmsMemberLoginLog;
+import com.flange.store.model.UmsMemberLoginLogExample;
 import com.flange.store.portal.domain.CommonResult;
 import com.flange.store.portal.domain.MemberDetails;
 import com.flange.store.portal.service.RedisService;
 import com.flange.store.portal.service.UmsMemberService;
+import com.flange.store.portal.util.JwtTokenUtil;
+import com.flange.store.util.IdUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +43,9 @@ import java.util.Random;
  */
 @Service
 public class UmsMemberServiceImpl implements UmsMemberService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UmsMemberServiceImpl.class);
+
     @Autowired
     private UmsMemberMapper memberMapper;
     @Autowired
@@ -40,6 +57,35 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     @Value("${authCode.expire.seconds}")
     private Long AUTH_CODE_EXPIRE_SECONDS;
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private UmsMemberLoginLogMapper memberLoginLogMapper;
+
+
+    @Override
+    public String login(String username, String password) {
+        String token = null;
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        try {
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            token = jwtTokenUtil.generateToken(userDetails);
+            insertLoginLog(username);
+
+        }catch (Exception e){
+            LOGGER.warn("登录异常:{}", e.getMessage());
+        }
+        return token;
+    }
 
     @Override
     public UmsMember getByUsername(String username) {
@@ -131,5 +177,25 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         String realAuthCode = redisService.get(REDIS_KEY_PREFIX_AUTH_CODE + telephone);
         return authCode.equals(realAuthCode);
     }
+
+    /**
+     * 记录会员登录日志
+     * @param username
+     */
+    private void insertLoginLog(String username){
+
+        UmsMember member = getByUsername(username);
+        UmsMemberLoginLogExample example = new UmsMemberLoginLogExample();
+        UmsMemberLoginLog loginLog = new UmsMemberLoginLog();
+        loginLog.setId(IdUtil.getGeneralID());
+        loginLog.setCreateTime(new Date());
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        loginLog.setIp(request.getRemoteHost());
+        loginLog.setMemberId(member.getId());
+        memberLoginLogMapper.insertSelective(loginLog);
+
+    }
+
 
 }

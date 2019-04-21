@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * 10:03 AM
  */
 @Component
-@RabbitListener(queues = "mall.order.cancel")
+@RabbitListener(queues = "store.order.cancel")
 public class CancelOrderReceiver {
     private static Logger LOGGER = LoggerFactory.getLogger(CancelOrderReceiver.class);
     @Autowired

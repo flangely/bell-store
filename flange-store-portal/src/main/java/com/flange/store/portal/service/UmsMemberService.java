@@ -11,6 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
  * 4:43 PM
  */
 public interface UmsMemberService {
+
+    /**
+     * 会员登录
+     * @param userName
+     * @param password
+     * @return
+     */
+    String login(String userName, String password);
     
     /**
      * 根据用户名获取会员
