@@ -1,17 +1,18 @@
 package com.flange.store.portal.service.impl;
 
-import com.flange.store.mapper.OmsCartItemMapper;
-import com.flange.store.mapper.OmsOrderMapper;
-import com.flange.store.mapper.PmsProductMapper;
+import com.flange.store.mapper.*;
 import com.flange.store.model.*;
+import com.flange.store.portal.component.CancelOrderSender;
+import com.flange.store.portal.dao.PortalOrderDao;
 import com.flange.store.portal.domain.CommonResult;
 import com.flange.store.portal.domain.ConfirmOrderResult;
+import com.flange.store.portal.domain.OmsOrderDetail;
 import com.flange.store.portal.domain.OrderParam;
 import com.flange.store.portal.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -50,6 +51,18 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
 
     @Value("${redis.key.prefix.orderId}")
     private String REDIS_KEY_PREFIX_ORDER_ID;
+
+    @Autowired
+    private OmsOrderSettingMapper orderSettingMapper;
+
+    @Autowired
+    private PortalOrderDao portalOrderDao;
+
+    @Autowired
+    private OmsOrderItemMapper orderItemMapper;
+
+    @Autowired
+    private CancelOrderSender cancelOrderSender;
 
     @Override
     public ConfirmOrderResult generateConfirmOrder(List<String> ids) {
@@ -92,8 +105,8 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         if (!hasStock(selectedCartItem, selectedProductList)){
             return new CommonResult().failed("库存不足，无法下单");
         }
-        //更新商品库存
-        updateStock(orderItemList, selectedProductList);
+        //减少商品库存
+        reduceStock(orderItemList, selectedProductList);
         //根据商品合计、运费计算应付金额
         OmsOrder order = new OmsOrder();
         order.setDiscountAmount(new BigDecimal(0));
@@ -154,17 +167,59 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
 
     @Override
     public CommonResult cancelTimeOutOrder() {
-        return null;
+
+        OmsOrderSetting orderSetting = orderSettingMapper.selectByPrimaryKey("1");
+        //查询超时、未支付的订单及订单详情
+        List<OmsOrderDetail> timeOutOrders = portalOrderDao.getTimeOutOrders(orderSetting.getNormalOrderOvertime());
+        if(CollectionUtils.isEmpty(timeOutOrders)){
+            return new CommonResult().failed("暂无超时订单");
+        }
+        //修改订单状态为交易取消
+        List<String> ids = new ArrayList<>();
+        for (OmsOrderDetail timeOutOrder : timeOutOrders) {
+            ids.add(timeOutOrder.getId());
+        }
+        portalOrderDao.updateOrderStatus(ids,4);
+        //订单取消后库存增加
+        for (OmsOrderDetail timeOutOrder : timeOutOrders) {
+            List<String> orderProductIdList = timeOutOrder.getOrderItemList().stream().map(item -> item.getProductId()).collect(Collectors.toList());
+            List<PmsProduct> orderProductList = getOrderProduct(orderProductIdList);
+            increaseStock(timeOutOrder.getOrderItemList(), orderProductList);
+        }
+        return new CommonResult().success(null);
     }
 
     @Override
     public void cancelOrder(String orderId) {
-
+        //查询为付款的取消订单
+        OmsOrderExample example = new OmsOrderExample();
+        example.createCriteria().andIdEqualTo(orderId).andStatusEqualTo(0).andDeleteStatusEqualTo(0);
+        List<OmsOrder> cancelOrderList = orderMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(cancelOrderList)){
+            return;
+        }
+        OmsOrder cancelOrder = cancelOrderList.get(0);
+        if(cancelOrder!=null){
+            //修改订单状态为取消
+            cancelOrder.setStatus(4);
+            orderMapper.updateByPrimaryKeySelective(cancelOrder);
+            OmsOrderItemExample orderItemExample=new OmsOrderItemExample();
+            orderItemExample.createCriteria().andOrderIdEqualTo(orderId);
+            List<OmsOrderItem> orderItemList = orderItemMapper.selectByExample(orderItemExample);
+            //解除订单商品库存锁定
+            List<String> orderProductIdList = orderItemList.stream().map(item -> item.getProductId()).collect(Collectors.toList());
+            List<PmsProduct> orderProductList = getOrderProduct(orderProductIdList);
+            increaseStock(orderItemList, orderProductList);
+        }
     }
 
     @Override
     public void sendDelayMessageCancelOrder(String orderId) {
-
+        //获取订单超时时间
+        OmsOrderSetting orderSetting = orderSettingMapper.selectByPrimaryKey("1");
+        long delayTimes = orderSetting.getNormalOrderOvertime()*60*1000;
+        //发送延迟消息
+        cancelOrderSender.sendMessage(orderId,delayTimes);
     }
 
 
@@ -189,11 +244,11 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
     }
 
     /**
-     * 更新商品库存
+     * 减少商品库存
      * @param orderItemList
      * @param selectedProductList
      */
-    private void updateStock(List<OmsOrderItem> orderItemList, List<PmsProduct> selectedProductList){
+    private void reduceStock(List<OmsOrderItem> orderItemList, List<PmsProduct> selectedProductList){
 
         for (OmsOrderItem orderItem : orderItemList){
             for (PmsProduct oldProduct : selectedProductList){
@@ -204,6 +259,27 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
                     productMapper.updateByPrimaryKeySelective(product);
                 }
             }
+        }
+
+
+    }
+
+    /**
+     * 订单取消后增加商品库存
+     * @param orderItemList
+     * @param selectedProductList
+     */
+    private void increaseStock(List<OmsOrderItem> orderItemList, List<PmsProduct> selectedProductList){
+
+        for (OmsOrderItem orderItem : orderItemList){
+            for (PmsProduct oldProduct : selectedProductList){
+                if (oldProduct.getId().equals(orderItem.getProductId())){
+                    PmsProduct product = new PmsProduct();
+                    product.setId(oldProduct.getId());
+                    product.setStock(oldProduct.getStock() + orderItem.getProductQuantity());
+                    productMapper.updateByPrimaryKeySelective(product);
+                }
+            }
 
         }
 
@@ -211,12 +287,13 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
     }
 
 
+
     private void deleteCartItemList(List<OmsCartItem> cartItemList, UmsMember currentMember){
         List<String> ids = new ArrayList<>();
         for (OmsCartItem cartItem: cartItemList){
             ids.add(cartItem.getId());
         }
-        cartItemService.delete(currentMember.getId(), ids);
+        cartItemService.changeStatus(currentMember.getId(), ids);
     }
 
 

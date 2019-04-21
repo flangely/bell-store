@@ -41,6 +41,15 @@ public interface OmsCartItemService {
      */
     int delete(String memberId,List<String> ids);
 
+
+    /**
+     * 修改状态为已生成订单
+     * @param memberId
+     * @param ids
+     * @return
+     */
+    int changeStatus(String memberId, List<String> ids);
+
     /**
      *获取购物车中用于选择商品规格的商品信息
      */

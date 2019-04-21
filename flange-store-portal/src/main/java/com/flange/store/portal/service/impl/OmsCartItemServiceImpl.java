@@ -79,6 +79,15 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
     }
 
     @Override
+    public int changeStatus(String memberId, List<String> ids) {
+        OmsCartItem cartItem = new OmsCartItem();
+        cartItem.setDeleteStatus(2);
+        OmsCartItemExample example = new OmsCartItemExample();
+        example.createCriteria().andIdIn(ids).andMemberIdEqualTo(memberId);
+        return cartItemMapper.updateByExampleSelective(cartItem, example);
+    }
+
+    @Override
     public CartProduct getCartProduct(String productId) {
         return productDao.getCartProduct(productId);
     }

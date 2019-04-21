@@ -11,11 +11,15 @@ import com.flange.store.model.PmsProductExample;
 import com.flange.store.util.IdUtil;
 import com.flange.store.util.SFTPUtil;
 import com.github.pagehelper.PageHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +31,8 @@ import java.util.List;
  */
 @Service
 public class PmsProductServiceImpl implements PmsProductService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PmsProductServiceImpl.class);
 
     @Autowired
     private PmsProductMapper productMapper;
@@ -136,4 +142,30 @@ public class PmsProductServiceImpl implements PmsProductService {
     public List<PmsProduct> list(String keyword) {
         return null;
     }
+
+
+    /**
+     * 建立和插入关系表操作
+     *
+     * @param dao       可以操作的dao
+     * @param dataList  要插入的数据
+     * @param productId 建立关系的id
+     */
+    private void relateAndInsertList(Object dao, List dataList, String productId) {
+        try {
+            if (CollectionUtils.isEmpty(dataList)) return;
+            for (Object item : dataList) {
+                Method setId = item.getClass().getMethod("setId", String.class);
+                setId.invoke(item, (String) null);
+                Method setProductId = item.getClass().getMethod("setProductId", String.class);
+                setProductId.invoke(item, productId);
+            }
+            Method insertList = dao.getClass().getMethod("insertList", List.class);
+            insertList.invoke(dao, dataList);
+        } catch (Exception e) {
+            LOGGER.warn("创建产品出错:{}", e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
 }
