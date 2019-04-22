@@ -39,8 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http .sessionManagement()// 基于token，所以不需要session
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf()// 由于使用的是JWT，我们这里不需要csrf
+                .disable()
+                .sessionManagement()// 基于token，所以不需要session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
@@ -55,36 +57,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs/**"
                 )
                 .permitAll()
+                .antMatchers("/sso/login", "/sso/register")// 对登录注册要允许匿名访问
+                .permitAll()
                 .antMatchers(HttpMethod.OPTIONS)//跨域请求会先进行一次options请求
                 .permitAll()
-                .antMatchers(
-                        "/sso/*",//登录注册
-                        "/home/**"//首页接口
-                )
-                .permitAll()
-                .antMatchers("/member/**","/returnApply/**")// 测试时开启
+                .antMatchers("/**")//测试时全部运行访问
                 .permitAll()
                 .anyRequest()// 除上面外的所有请求全部需要鉴权认证
-                .authenticated()
-                .and()
-                .exceptionHandling()
-                .accessDeniedHandler(new GoAccessDeniedHandler())
-                .authenticationEntryPoint(new GoAuthenticationEntryPoint())
-                .and()
-                .formLogin()
-                .loginPage("/sso/login")
-                .successHandler(new GoAuthenticationSuccessHandler())
-                .failureHandler(new GoAuthenticationFailureHandler())
-                .and()
-                .logout()
-                .logoutUrl("/sso/logout")
-                .logoutSuccessHandler(new GoLogoutSuccessHandler())
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .and()
-                .csrf()
-                .disable();//开启basic认证登录后可以调用需要认证的接口
-        http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .authenticated();
+        // 禁用缓存
+        httpSecurity.headers().cacheControl();
+        // 添加JWT filter
+        httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        //添加自定义未授权和未登录结果返回
+//        httpSecurity.exceptionHandling()
+//                .accessDeniedHandler(restfulAccessDeniedHandler)
+//                .authenticationEntryPoint(restAuthenticationEntryPoint);
     }
 
     @Bean

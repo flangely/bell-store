@@ -1,5 +1,6 @@
 package com.flange.store.portal.controller;
 
+import com.flange.store.model.UmsMember;
 import com.flange.store.portal.domain.CommonResult;
 import com.flange.store.portal.domain.UmsMemberLoginParam;
 import com.flange.store.portal.service.UmsMemberService;
@@ -52,6 +53,19 @@ public class UmsMemberController {
         tokenMap.put("tokenHead", tokenHead);
         return new CommonResult().success(tokenMap);
     }
+
+    @ApiOperation("获取用户信息")
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @ResponseBody
+    public Object getMemberInfo(){
+        UmsMember member = memberService.getCurrentMember();
+        if (member != null){
+            member.setUserPassword(null);
+            return new CommonResult().success(member);
+        }
+        return new CommonResult().failed("请先登录");
+    }
+
 
     @ApiOperation(value = "登出功能")
     @RequestMapping(value = "/logout", method = RequestMethod.POST)

@@ -105,10 +105,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        /*DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        auth.authenticationProvider(daoAuthenticationProvider);*/
         auth.userDetailsService(userDetailsService())
                 .passwordEncoder(passwordEncoder());
     }
