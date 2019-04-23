@@ -46,6 +46,7 @@ public class PmsProductServiceImpl implements PmsProductService {
         int count;
         PmsProduct product = productParam;
         product.setId(IdUtil.getGeneralID());
+        product.setVerifyStatus(1);
         productMapper.insertSelective(product);
         count = 1;
         return count;

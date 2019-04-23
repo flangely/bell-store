@@ -41,11 +41,11 @@ public class HomeServiceImpl implements HomeService {
         //获取首页广告
         result.setAdvertiseList(getHomeAdvertiseList());
         //获取推荐出版社
-        result.setBrandList(homeDao.getRecommendBrandList(0,4));
+        result.setBrandList(homeDao.getRecommendBrandList(0,20));
         //获取新品推荐
-        result.setNewProductList(homeDao.getNewProductList(0,4));
+        result.setNewProductList(homeDao.getNewProductList(0,20));
         //获取人气推荐
-        result.setHotProductList(homeDao.getHotProductList(0,4));
+        result.setHotProductList(homeDao.getHotProductList(0,20));
         return result;
     }
 
@@ -72,7 +72,7 @@ public class HomeServiceImpl implements HomeService {
 
     private List<SmsHomeAdvertise> getHomeAdvertiseList() {
         SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
-        example.createCriteria().andTypeEqualTo(1).andStatusEqualTo(1);
+        example.createCriteria().andTypeEqualTo(0).andStatusEqualTo(1);
         example.setOrderByClause("sort desc");
         return advertiseMapper.selectByExample(example);
     }
