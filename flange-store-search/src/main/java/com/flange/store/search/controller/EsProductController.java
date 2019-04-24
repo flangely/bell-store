@@ -69,6 +69,7 @@ public class EsProductController {
     public Object search(@RequestParam(required = false) String keyword,
                          @RequestParam(required = false, defaultValue = "0") Integer pageNum,
                          @RequestParam(required = false, defaultValue = "5") Integer pageSize) {
+        pageNum--;
         Page<EsProduct> esProductPage = esProductService.search(keyword, pageNum, pageSize);
         return new CommonResult().pageSuccess(esProductPage);
     }
@@ -84,6 +85,7 @@ public class EsProductController {
                          @RequestParam(required = false, defaultValue = "0") Integer pageNum,
                          @RequestParam(required = false, defaultValue = "5") Integer pageSize,
                          @RequestParam(required = false, defaultValue = "0") Integer sort) {
+        pageNum--;
         Page<EsProduct> esProductPage = esProductService.search(keyword, brandId, productCategoryId, pageNum, pageSize, sort);
         return new CommonResult().pageSuccess(esProductPage);
     }

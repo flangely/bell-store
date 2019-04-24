@@ -1,8 +1,10 @@
 package com.flange.store.portal.controller;
 
+import com.flange.store.model.UmsMember;
 import com.flange.store.portal.domain.CommonResult;
 import com.flange.store.portal.domain.MemberProductCollection;
 import com.flange.store.portal.service.MemberCollectionService;
+import com.flange.store.portal.service.UmsMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ import java.util.List;
 public class MemberCollectionController {
     @Autowired
     private MemberCollectionService memberCollectionService;
+
+    @Autowired
+    private UmsMemberService memberService;
     @ApiOperation("添加商品收藏")
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
     @ResponseBody
@@ -48,10 +53,11 @@ public class MemberCollectionController {
     }
 
     @ApiOperation("显示关注列表")
-    @RequestMapping(value = "/listProduct/{memberId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/listProduct", method = RequestMethod.GET)
     @ResponseBody
-    public Object listProduct(@PathVariable String memberId) {
-        List<MemberProductCollection> memberProductCollectionList = memberCollectionService.listProduct(memberId);
+    public Object listProduct() {
+        UmsMember member = memberService.getCurrentMember();
+        List<MemberProductCollection> memberProductCollectionList = memberCollectionService.listProduct(member.getId());
         return new CommonResult().success(memberProductCollectionList);
     }
 }
