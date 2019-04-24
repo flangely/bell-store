@@ -1,5 +1,6 @@
 package com.flange.store.portal.controller;
 
+import com.flange.store.model.PmsProduct;
 import com.flange.store.model.UmsMember;
 import com.flange.store.portal.domain.CommonResult;
 import com.flange.store.portal.domain.MemberProductCollection;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,7 +34,18 @@ public class MemberCollectionController {
     @ApiOperation("添加商品收藏")
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
     @ResponseBody
-    public Object addProduct(@RequestBody MemberProductCollection productCollection) {
+    public Object addProduct(@RequestBody PmsProduct product) {
+        UmsMember member = memberService.getCurrentMember();
+        MemberProductCollection productCollection = new MemberProductCollection();
+        productCollection.setMemberId(member.getId());
+        productCollection.setMemberIcon(member.getIcon());
+        productCollection.setMemberNickname(member.getNickname());
+        productCollection.setProductId(product.getId());
+        productCollection.setProductName(product.getName());
+        productCollection.setProductPic(product.getPictureUrl());
+        productCollection.setProductSubTitle(product.getSubTitle());
+        productCollection.setProductPrice(product.getPrice().setScale(  2   , BigDecimal.ROUND_HALF_UP).toString());
+        productCollection.setCreateTime(new Date());
         int count = memberCollectionService.addProduct(productCollection);
         if(count>0){
             return new CommonResult().success(count);
@@ -43,8 +57,9 @@ public class MemberCollectionController {
     @ApiOperation("删除收藏商品")
     @RequestMapping(value = "/deleteProduct", method = RequestMethod.POST)
     @ResponseBody
-    public Object deleteProduct(String memberId, String productId) {
-        int count = memberCollectionService.deleteProduct(memberId,productId);
+    public Object deleteProduct(String productId) {
+        UmsMember member = memberService.getCurrentMember();
+        int count = memberCollectionService.deleteProduct(member.getId(), productId);
         if(count>0){
             return new CommonResult().success(count);
         }else{
