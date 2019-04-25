@@ -51,6 +51,7 @@ public class UmsMemberController {
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
         tokenMap.put("tokenHead", tokenHead);
+        tokenMap.put("memberId", memberService.getCurrentMember().getId());
         return new CommonResult().success(tokenMap);
     }
 

@@ -1,16 +1,21 @@
 package com.flange.store.portal.controller;
 
 import com.flange.store.model.OmsCartItem;
+import com.flange.store.model.PmsProduct;
+import com.flange.store.model.UmsMember;
 import com.flange.store.portal.domain.CartProduct;
 import com.flange.store.portal.domain.CommonResult;
 import com.flange.store.portal.service.OmsCartItemService;
+import com.flange.store.portal.service.PmsProductService;
 import com.flange.store.portal.service.UmsMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author flangely
@@ -29,9 +34,30 @@ public class OmsCartItemController {
     @Autowired
     private UmsMemberService memberService;
 
+    @Autowired
+    private PmsProductService productService;
+
     @ApiOperation("添加商品到购物车")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Object add(@RequestBody OmsCartItem cartItem){
+    public Object add(@RequestBody Map<String, Object> map){
+        String productId = (String) map.get("productId");
+        int quantity = (int) map.get("quantity");
+        UmsMember member = memberService.getCurrentMember();
+        PmsProduct product = productService.getById(productId);
+        OmsCartItem cartItem = new OmsCartItem();
+        cartItem.setProductId(productId);
+        cartItem.setMemberId(member.getId());
+        cartItem.setQuantity(quantity);
+        cartItem.setPrice(product.getPrice());
+        cartItem.setProductPic(product.getPictureUrl());
+        cartItem.setProductName(product.getName());
+        cartItem.setProductSubTitle(product.getSubTitle());
+        cartItem.setMemberNickname(member.getNickname());
+        cartItem.setCreateDate(new Date());
+        cartItem.setDeleteStatus(0);
+        cartItem.setProductCategoryId(product.getProductCategoryId());
+        cartItem.setProductSn(product.getProductSn());
+        cartItem.setProductBrand(product.getBrandName());
         int count = cartItemService.add(cartItem);
         if (count > 0){
             return new CommonResult().success(count);
