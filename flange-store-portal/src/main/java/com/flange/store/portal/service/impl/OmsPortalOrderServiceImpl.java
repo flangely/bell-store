@@ -351,10 +351,11 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
      */
     private ConfirmOrderResult.CalcAmount calcCartAmount(List<OmsCartItem> cartItemList) {
         ConfirmOrderResult.CalcAmount calcAmount = new ConfirmOrderResult.CalcAmount();
+        //运费暂时全部为5元
         BigDecimal freightAmount = new BigDecimal(5);
         BigDecimal totalAmount = new BigDecimal(0);
         BigDecimal promotionAmount = new BigDecimal(0);
-        BigDecimal payAmount = new BigDecimal(0);
+        BigDecimal payAmount;
         for (OmsCartItem cartItem : cartItemList){
             totalAmount = totalAmount.add(cartItem.getPrice().multiply(new BigDecimal(cartItem.getQuantity())));
         }
@@ -362,6 +363,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         calcAmount.setTotalAmount(totalAmount);
         calcAmount.setPromotionAmount(promotionAmount);
         calcAmount.setPayAmount(payAmount);
+        calcAmount.setFreightAmount(freightAmount);
         return calcAmount;
     }
 }
