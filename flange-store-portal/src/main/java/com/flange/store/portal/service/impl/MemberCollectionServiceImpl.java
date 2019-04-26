@@ -3,7 +3,11 @@ package com.flange.store.portal.service.impl;
 import com.flange.store.portal.domain.MemberProductCollection;
 import com.flange.store.portal.repository.MemberProductCollectionRepository;
 import com.flange.store.portal.service.MemberCollectionService;
+import com.mongodb.client.result.DeleteResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +22,9 @@ import java.util.List;
 public class MemberCollectionServiceImpl implements MemberCollectionService {
     @Autowired
     private MemberProductCollectionRepository productCollectionRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Override
     public int addProduct(MemberProductCollection productCollection) {
@@ -38,5 +45,13 @@ public class MemberCollectionServiceImpl implements MemberCollectionService {
     @Override
     public List<MemberProductCollection> listProduct(String memberId) {
         return productCollectionRepository.findByMemberId(memberId);
+    }
+
+    @Override
+    public int deleteMuliProduct(String memberId, List<String> productIds) {
+        Query query = new Query(Criteria.where("memberId").is(memberId).and("productId").in(productIds));
+        int count = (int)mongoTemplate.remove(query, MemberProductCollection.class).getDeletedCount();
+        return count;
+
     }
 }

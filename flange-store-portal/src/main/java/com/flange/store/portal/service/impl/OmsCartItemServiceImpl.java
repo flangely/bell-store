@@ -75,7 +75,7 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
         cartItem.setDeleteStatus(1);
         OmsCartItemExample example = new OmsCartItemExample();
         example.createCriteria().andMemberIdEqualTo(memberId).andIdIn(ids);
-        return cartItemMapper.updateByExampleSelective(cartItem, example);
+        return cartItemMapper.deleteByExample(example);
     }
 
     @Override

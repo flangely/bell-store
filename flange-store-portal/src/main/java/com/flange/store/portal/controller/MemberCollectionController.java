@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author flangely
@@ -57,7 +59,7 @@ public class MemberCollectionController {
     @ApiOperation("删除收藏商品")
     @RequestMapping(value = "/deleteProduct", method = RequestMethod.POST)
     @ResponseBody
-    public Object deleteProduct(String productId) {
+    public Object deleteProduct(@RequestParam String productId) {
         UmsMember member = memberService.getCurrentMember();
         int count = memberCollectionService.deleteProduct(member.getId(), productId);
         if(count>0){
@@ -66,6 +68,20 @@ public class MemberCollectionController {
             return new CommonResult().failed();
         }
     }
+
+    @ApiOperation("删除收藏商品")
+    @RequestMapping(value = "/multiDeleteProduct", method = RequestMethod.POST)
+    @ResponseBody
+    public Object multiDeleteProduct(@RequestBody Map map){
+        List<Object> objectList = (List<Object>)map.get("ids");
+//        String memberId = map.get("memberId").toString();
+        List<String> ids = objectList.stream().map(val -> val.toString()).collect(Collectors.toList());
+        UmsMember member = memberService.getCurrentMember();
+        int count = memberCollectionService.deleteMuliProduct(member.getId(), ids);
+        return new CommonResult().success(count);
+
+    }
+
 
     @ApiOperation("显示关注列表")
     @RequestMapping(value = "/listProduct", method = RequestMethod.GET)

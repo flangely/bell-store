@@ -11,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @author flangely
@@ -27,7 +30,9 @@ public class OmsPortalOrderController {
     @ApiOperation("根据购物车信息生成确认单信息")
     @RequestMapping(value = "/generateConfirmOrder",method = RequestMethod.POST)
     @ResponseBody
-    public Object generateConfirmOrder(@RequestBody List<String> cartItemIds){
+    public Object generateConfirmOrder(@RequestBody Map map){
+        List<Object> objectList = (List<Object>) map.get("cartItemIds");
+        List<String> cartItemIds = objectList.stream().map(value -> value.toString()).collect(Collectors.toList());
         ConfirmOrderResult confirmOrderResult = portalOrderService.generateConfirmOrder(cartItemIds);
         return new CommonResult().success(confirmOrderResult);
     }

@@ -16,4 +16,6 @@ public interface MemberCollectionService {
     int deleteProduct(String memberId, String productId);
 
     List<MemberProductCollection> listProduct(String memberId);
+
+    int deleteMuliProduct(String memberId, List<String> productIds);
 }

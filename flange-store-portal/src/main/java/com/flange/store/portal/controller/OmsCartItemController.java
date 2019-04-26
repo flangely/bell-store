@@ -1,5 +1,6 @@
 package com.flange.store.portal.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.flange.store.model.OmsCartItem;
 import com.flange.store.model.PmsProduct;
 import com.flange.store.model.UmsMember;
@@ -13,9 +14,11 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author flangely
@@ -102,7 +105,9 @@ public class OmsCartItemController {
 
     @ApiOperation("删除购物车中的某个商品")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public Object delete(@RequestParam("ids") List<String> ids) {
+    public Object delete(@RequestBody Map<String, Object> map) {
+        List<Object> objectList = (List<Object>) map.get("ids");
+        List<String> ids = objectList.stream().map(value -> value.toString()).collect(Collectors.toList());
         int count = cartItemService.delete(memberService.getCurrentMember().getId(),ids);
         if (count > 0) {
             return new CommonResult().success(count);
