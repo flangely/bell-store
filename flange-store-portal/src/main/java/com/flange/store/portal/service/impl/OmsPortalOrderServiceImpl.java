@@ -4,11 +4,13 @@ import com.flange.store.mapper.*;
 import com.flange.store.model.*;
 import com.flange.store.portal.component.CancelOrderSender;
 import com.flange.store.portal.dao.PortalOrderDao;
+import com.flange.store.portal.dao.PortalOrderItemDao;
 import com.flange.store.portal.domain.CommonResult;
 import com.flange.store.portal.domain.ConfirmOrderResult;
 import com.flange.store.portal.domain.OmsOrderDetail;
 import com.flange.store.portal.domain.OrderParam;
 import com.flange.store.portal.service.*;
+import com.flange.store.util.IdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -60,6 +62,9 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
 
     @Autowired
     private OmsOrderItemMapper orderItemMapper;
+
+    @Autowired
+    private PortalOrderItemDao orderItemDao;
 
     @Autowired
     private CancelOrderSender cancelOrderSender;
@@ -121,7 +126,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         //支付方式：0->未支付；1->支付宝；2->微信
         order.setPayType(orderParam.getPayType());
         //订单来源：0->PC订单；1->app订单
-        order.setSourceType(1);
+        order.setSourceType(0);
         //订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
         order.setStatus(0);
         //收货人信息：姓名、电话、邮编、地址
@@ -136,18 +141,22 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         //0->未确认；1->已确认
         order.setConfirmStatus(0);
         order.setDeleteStatus(0);
-
+        order.setId(IdUtil.getOrderId());
         //生成订单号
         order.setOrderSn(generateOrderSn(order));
         // TODO: 2018/9/3 bill_*,delivery_*
         //插入order表和order_item表
         orderMapper.insert(order);
         for (OmsOrderItem orderItem : orderItemList) {
+            orderItem.setId(IdUtil.getGeneralID());
             orderItem.setOrderId(order.getId());
             orderItem.setOrderSn(order.getOrderSn());
         }
+        //保存订单商品信息
+        orderItemDao.insertList(orderItemList);
         //删除购物车中的下单商品
-        deleteCartItemList(selectedCartItem,currentMember);
+//        deleteCartItemList(selectedCartItem,currentMember);
+        cartItemService.delete(currentMember.getId(),selectedCartItem.stream().map(val -> val.getId()).collect(Collectors.toList()));
         Map<String,Object> result = new HashMap<>();
         result.put("order",order);
         result.put("orderItemList",orderItemList);

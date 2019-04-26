@@ -28,7 +28,7 @@ public class UmsMemberReceiveAddressServiceImpl implements UmsMemberReceiveAddre
     public int add(UmsMemberReceiveAddress address) {
         UmsMember currentMember = memberService.getCurrentMember();
         address.setMemberId(currentMember.getId());
-        return addressMapper.insert(address);
+        return addressMapper.insertSelective(address);
     }
 
     @Override

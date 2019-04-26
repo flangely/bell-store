@@ -9,6 +9,7 @@ import com.flange.store.mapper.OmsOrderOperateHistoryMapper;
 import com.flange.store.model.OmsOrder;
 import com.flange.store.model.OmsOrderExample;
 import com.flange.store.model.OmsOrderOperateHistory;
+import com.flange.store.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,6 +69,7 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         int count = orderMapper.updateByExampleSelective(record, example);
         List<OmsOrderOperateHistory> historyList = ids.stream().map(orderId -> {
             OmsOrderOperateHistory history = new OmsOrderOperateHistory();
+            history.setId(IdUtil.getGeneralID());
             history.setOrderId(orderId);
             history.setCreateTime(new Date());
             history.setOperateMan("后台管理员");
