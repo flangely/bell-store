@@ -31,7 +31,7 @@ public interface OmsPortalOrderService {
      * 支付成功后的回调
      */
     @Transactional
-    CommonResult paySuccess(String orderId);
+    CommonResult paySuccess(String orderId, Integer payType);
 
     /**
      * 自动取消超时订单
@@ -56,5 +56,12 @@ public interface OmsPortalOrderService {
      * @return
      */
     List<OmsOrderDetail> getMemberOrderList(String memberId);
+
+    /**
+     * 将订单状态置为删除
+     * @param id
+     * @return
+     */
+    int changeDelStatus(String id);
 
 }

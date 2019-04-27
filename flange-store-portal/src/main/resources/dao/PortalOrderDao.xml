@@ -36,7 +36,7 @@
             oms_order o
             LEFT JOIN oms_order_item ot ON o.id = ot.order_id
         WHERE
-            o.member_id = #{memberId} and (o.status = 0 or o.status = 1 or o.status = 2 or o.status =3)
+            o.member_id = #{memberId} and o.status != 5 and o.delete_status != 1
     </select>
 
     <select id="getTimeOutOrders" resultMap="orderDetailMap">

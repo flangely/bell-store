@@ -164,12 +164,13 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
     }
 
     @Override
-    public CommonResult paySuccess(String orderId) {
+    public CommonResult paySuccess(String orderId, Integer payType) {
         //修改订单支付状态
         OmsOrder order = new OmsOrder();
         order.setId(orderId);
         order.setStatus(1);
         order.setPaymentTime(new Date());
+        order.setPayType(payType);
         int count = orderMapper.updateByPrimaryKeySelective(order);
         return new CommonResult().success("支付成功",count);
     }
@@ -234,6 +235,14 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
     @Override
     public List<OmsOrderDetail> getMemberOrderList(String memberId) {
         return portalOrderDao.getMemberOrderList(memberId);
+    }
+
+    @Override
+    public int changeDelStatus(String id) {
+        OmsOrder order = new OmsOrder();
+        order.setId(id);
+        order.setDeleteStatus(1);
+        return orderMapper.updateByPrimaryKeySelective(order);
     }
 
 

@@ -54,8 +54,8 @@ public class OmsPortalOrderController {
     @ApiOperation("支付成功的回调")
     @RequestMapping(value = "/paySuccess",method = RequestMethod.POST)
     @ResponseBody
-    public Object paySuccess(@RequestParam String orderId){
-        return portalOrderService.paySuccess(orderId);
+    public Object paySuccess(@RequestParam String orderId, @RequestParam Integer payType){
+        return portalOrderService.paySuccess(orderId, payType);
     }
 
     @ApiOperation("自动取消超时订单")
@@ -85,11 +85,20 @@ public class OmsPortalOrderController {
     @ApiOperation("关闭订单")
     @RequestMapping(value = "/cancelMyOrder",method = RequestMethod.POST)
     @ResponseBody
-    public Object getMemberOrder(@RequestParam String id){
+    public Object calOrder(@RequestParam String id){
         UmsMember member = memberService.getCurrentMember();
         int count = 0;
         portalOrderService.cancelOrder(id);
         count = 1;
+        return  new CommonResult().success(count);
+    }
+
+    @ApiOperation("删除订单")
+    @RequestMapping(value = "/delMyOrder",method = RequestMethod.DELETE)
+    @ResponseBody
+    public Object deleteStatusOrder(@RequestParam String id){
+        UmsMember member = memberService.getCurrentMember();
+        int count = portalOrderService.changeDelStatus(id);
         return  new CommonResult().success(count);
     }
 
