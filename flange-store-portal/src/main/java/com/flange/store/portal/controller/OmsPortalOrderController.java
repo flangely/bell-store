@@ -1,9 +1,12 @@
 package com.flange.store.portal.controller;
 
+import com.flange.store.model.UmsMember;
 import com.flange.store.portal.domain.CommonResult;
 import com.flange.store.portal.domain.ConfirmOrderResult;
+import com.flange.store.portal.domain.OmsOrderDetail;
 import com.flange.store.portal.domain.OrderParam;
 import com.flange.store.portal.service.OmsPortalOrderService;
+import com.flange.store.portal.service.UmsMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,11 @@ import java.util.stream.Collectors;
 public class OmsPortalOrderController {
     @Autowired
     private OmsPortalOrderService portalOrderService;
+
+    @Autowired
+    private UmsMemberService memberService;
+
+
     @ApiOperation("根据购物车信息生成确认单信息")
     @RequestMapping(value = "/generateConfirmOrder",method = RequestMethod.POST)
     @ResponseBody
@@ -63,5 +71,14 @@ public class OmsPortalOrderController {
     public Object cancelOrder(String orderId){
         portalOrderService.sendDelayMessageCancelOrder(orderId);
         return new CommonResult().success(null);
+    }
+
+    @ApiOperation("取消单个超时订单")
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @ResponseBody
+    public Object getMemberOrder(){
+        UmsMember member = memberService.getCurrentMember();
+        List<OmsOrderDetail> list = portalOrderService.getMemberOrderList(member.getId());
+        return new CommonResult().success(list);
     }
 }

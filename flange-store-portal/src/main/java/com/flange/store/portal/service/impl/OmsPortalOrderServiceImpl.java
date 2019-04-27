@@ -231,6 +231,11 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         cancelOrderSender.sendMessage(orderId,delayTimes);
     }
 
+    @Override
+    public List<OmsOrderDetail> getMemberOrderList(String memberId) {
+        return portalOrderDao.getMemberOrderList(memberId);
+    }
+
 
     /**
      * 生成18位订单编号:8位日期+2位平台号码+2位支付方式+6位以上自增id

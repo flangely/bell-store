@@ -2,6 +2,7 @@ package com.flange.store.portal.service;
 
 import com.flange.store.portal.domain.CommonResult;
 import com.flange.store.portal.domain.ConfirmOrderResult;
+import com.flange.store.portal.domain.OmsOrderDetail;
 import com.flange.store.portal.domain.OrderParam;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,4 +49,11 @@ public interface OmsPortalOrderService {
      * 发送延迟消息取消订单
      */
     void sendDelayMessageCancelOrder(String orderId);
+
+    /**
+     * 获取用户订单
+     * @param memberId
+     * @return
+     */
+    List<OmsOrderDetail> getMemberOrderList(String memberId);
 }

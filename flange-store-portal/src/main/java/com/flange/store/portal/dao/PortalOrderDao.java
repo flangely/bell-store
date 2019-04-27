@@ -39,4 +39,12 @@ public interface PortalOrderDao {
      */
     int releaseSkuStockLock(@Param("itemList") List<OmsOrderItem> orderItemList);
 
+
+    /**
+     * 获取会员所有订单
+     * @param memberId
+     * @return
+     */
+    List<OmsOrderDetail> getMemberOrderList(@Param("memberId") String memberId);
+
 }
