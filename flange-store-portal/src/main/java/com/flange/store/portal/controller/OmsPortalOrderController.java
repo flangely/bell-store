@@ -73,7 +73,7 @@ public class OmsPortalOrderController {
         return new CommonResult().success(null);
     }
 
-    @ApiOperation("取消单个超时订单")
+    @ApiOperation("获取会员订单")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
     public Object getMemberOrder(){
@@ -81,4 +81,17 @@ public class OmsPortalOrderController {
         List<OmsOrderDetail> list = portalOrderService.getMemberOrderList(member.getId());
         return new CommonResult().success(list);
     }
+
+    @ApiOperation("关闭订单")
+    @RequestMapping(value = "/cancelMyOrder",method = RequestMethod.POST)
+    @ResponseBody
+    public Object getMemberOrder(@RequestParam String id){
+        UmsMember member = memberService.getCurrentMember();
+        int count = 0;
+        portalOrderService.cancelOrder(id);
+        count = 1;
+        return  new CommonResult().success(count);
+    }
+
+
 }

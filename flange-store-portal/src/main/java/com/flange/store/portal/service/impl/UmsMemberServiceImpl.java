@@ -70,6 +70,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     private UmsMemberLoginLogMapper memberLoginLogMapper;
 
 
+
     @Override
     public String login(String username, String password) {
         String token = null;
@@ -144,21 +145,16 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     }
 
     @Override
-    public CommonResult updatePassword(String telephone, String password, String authCode) {
-        UmsMemberExample example = new UmsMemberExample();
-        example.createCriteria().andPhoneEqualTo(telephone);
-        List<UmsMember> memberList = memberMapper.selectByExample(example);
-        if(CollectionUtils.isEmpty(memberList)){
-            return new CommonResult().failed("该账号不存在");
+    public CommonResult updatePassword(String oldPwd, String newPwd) {
+        UmsMember member = getCurrentMember();
+        boolean correct = passwordEncoder.matches(oldPwd, member.getUserPassword());
+        if (correct){//密码验证通过
+            member.setUserPassword(passwordEncoder.encode(newPwd));
+            int count = memberMapper.updateByPrimaryKeySelective(member);
+            return new CommonResult().success(count);
+        }else {
+            return new CommonResult().failed("密码错误");
         }
-        //验证验证码
-        if(!verifyAuthCode(authCode,telephone)){
-            return new CommonResult().failed("验证码错误");
-        }
-        UmsMember umsMember = memberList.get(0);
-        umsMember.setUserPassword(passwordEncoder.encode(password));
-        memberMapper.updateByPrimaryKeySelective(umsMember);
-        return new CommonResult().success("密码修改成功",null);
     }
 
     @Override
@@ -168,7 +164,16 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         MemberDetails memberDetails = (MemberDetails) auth.getPrincipal();
         return memberDetails.getUmsMember();
     }
-    
+
+    @Override
+    public UmsMember updateInfo(UmsMember member) {
+        UmsMember currentMember = getCurrentMember();
+        member.setId(currentMember.getId());
+        member.setUserPassword(null);
+        memberMapper.updateByPrimaryKeySelective(member);
+        return member;
+    }
+
 
     //对输入的验证码进行校验
     private boolean verifyAuthCode(String authCode, String telephone){

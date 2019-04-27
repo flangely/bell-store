@@ -56,4 +56,5 @@ public interface OmsPortalOrderService {
      * @return
      */
     List<OmsOrderDetail> getMemberOrderList(String memberId);
+
 }

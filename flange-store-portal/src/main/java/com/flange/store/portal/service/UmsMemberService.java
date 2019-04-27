@@ -45,12 +45,19 @@ public interface UmsMemberService {
      * 修改密码
      */
     @Transactional
-    CommonResult updatePassword(String telephone, String password, String authCode);
+    CommonResult updatePassword(String oldPwd, String newPwd);
 
     /**
      * 获取当前登录会员
      */
     UmsMember getCurrentMember();
+
+    /**
+     * 更新用户信息
+     * @param member
+     * @return
+     */
+    UmsMember updateInfo(UmsMember member);
     
     
 }

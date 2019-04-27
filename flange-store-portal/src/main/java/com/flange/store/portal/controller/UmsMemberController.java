@@ -60,6 +60,7 @@ public class UmsMemberController {
     @ResponseBody
     public Object getMemberInfo(){
         UmsMember member = memberService.getCurrentMember();
+        member.setUserPassword(null);
         if (member != null){
             member.setUserPassword(null);
             return new CommonResult().success(member);
@@ -83,12 +84,22 @@ public class UmsMemberController {
     }
 
     @ApiOperation("修改密码")
-    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.PUT)
     @ResponseBody
-    public Object updatePassword(@RequestParam String telephone,
-                                 @RequestParam String password,
-                                 @RequestParam String authCode) {
-        return memberService.updatePassword(telephone,password,authCode);
+    public Object updatePassword(@RequestParam String oldPwd,
+                                 @RequestParam String newPwd) {
+        return memberService.updatePassword(oldPwd, newPwd);
     }
+
+
+    @ApiOperation("修改用户信息")
+    @RequestMapping(value = "/updateInfo", method = RequestMethod.PUT)
+    @ResponseBody
+    public Object updatePassword(@RequestBody UmsMember member) {
+        UmsMember newMember = memberService.updateInfo(member);
+        return new CommonResult().success(newMember);
+    }
+
+
 
 }
