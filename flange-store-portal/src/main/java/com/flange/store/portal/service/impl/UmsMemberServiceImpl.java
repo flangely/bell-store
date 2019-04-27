@@ -105,7 +105,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     }
 
     @Override
-    public CommonResult register(String username, String password, String telephone, String authCode) {
+    public CommonResult register(String username, String password, String telephone) {
         //验证验证码
 //        if(!verifyAuthCode(authCode,telephone)){
 //            return new CommonResult().failed("验证码错误");
@@ -127,7 +127,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         umsMember.setStatus(1);
         umsMember.setNickname(username);
         memberMapper.insertSelective(umsMember);
-//        umsMember.setUserPassword(null);
+        umsMember.setUserPassword(null);
         return new CommonResult().success("注册成功",null);
     }
 

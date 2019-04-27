@@ -34,7 +34,7 @@ public interface UmsMemberService {
      * 用户注册
      */
     @Transactional
-    CommonResult register(String username, String password, String telephone, String authCode);
+    CommonResult register(String username, String password, String telephone);
 
     /**
      * 生成验证码

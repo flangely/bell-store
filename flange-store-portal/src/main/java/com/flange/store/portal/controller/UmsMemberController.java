@@ -35,9 +35,8 @@ public class UmsMemberController {
     @ResponseBody
     public Object register(@RequestParam String username,
                            @RequestParam String password,
-                           @RequestParam String telephone,
-                           @RequestParam String authCode) {
-        return memberService.register(username, password, telephone, authCode);
+                           @RequestParam String telephone) {
+        return memberService.register(username, password, telephone);
     }
 
     @ApiOperation("登录以后返回token")
