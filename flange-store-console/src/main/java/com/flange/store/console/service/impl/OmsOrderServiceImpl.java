@@ -49,6 +49,7 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         List<OmsOrderOperateHistory> operateHistoryList = deliveryParamList.stream()
                 .map(omsOrderDeliveryParam -> {
                     OmsOrderOperateHistory history = new OmsOrderOperateHistory();
+                    history.setId(IdUtil.getGeneralID());
                     history.setOrderId(omsOrderDeliveryParam.getOrderId());
                     history.setCreateTime(new Date());
                     history.setOperateMan("后台管理员");
