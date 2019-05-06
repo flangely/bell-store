@@ -1,5 +1,6 @@
 package com.flange.store.console.service.impl;
 
+import com.flange.store.console.component.ProductChangeSender;
 import com.flange.store.console.dto.PmsProductParam;
 import com.flange.store.console.dto.PmsProductQueryParam;
 import com.flange.store.console.dto.PmsProductResult;
@@ -40,6 +41,9 @@ public class PmsProductServiceImpl implements PmsProductService {
     @Autowired
     private PmsProductCategoryService productCategoryService;
 
+    @Autowired
+    private ProductChangeSender productChangeSender;
+
 
     @Override
     public int create(PmsProductParam productParam) {
@@ -48,6 +52,7 @@ public class PmsProductServiceImpl implements PmsProductService {
         product.setId(IdUtil.getGeneralID());
         product.setVerifyStatus(1);
         productMapper.insertSelective(product);
+        productChangeSender.sendMessage(product.getId() + ",add");
         count = 1;
         return count;
     }
@@ -67,6 +72,7 @@ public class PmsProductServiceImpl implements PmsProductService {
         PmsProduct product = productParam;
         product.setId(id);
         productMapper.updateByPrimaryKeySelective(product);
+        productChangeSender.sendMessage(id + ",edit");
         count = 1;
         return count;
     }
@@ -136,6 +142,12 @@ public class PmsProductServiceImpl implements PmsProductService {
         product.setDeleteStatus(deleteStatus);
         PmsProductExample example = new PmsProductExample();
         example.createCriteria().andIdIn(ids);
+        String message = "";
+        for (String id : ids){
+            message += id + ",";
+        }
+        message = message.substring(0, message.lastIndexOf(",")) + ",delete";
+        productChangeSender.sendMessage(message);
         return productMapper.updateByExampleSelective(product, example);
     }
 

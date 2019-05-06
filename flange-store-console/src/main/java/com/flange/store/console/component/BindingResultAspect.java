@@ -11,7 +11,7 @@ import org.springframework.validation.BindingResult;
 
 /**
  * HibernateValidator错误结果处理切面
- * Created by flangely on 2018/4/26.
+ * Created by flangely on 2019/3/26.
  */
 @Aspect
 @Component
