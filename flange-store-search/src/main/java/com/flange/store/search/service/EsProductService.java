@@ -35,7 +35,7 @@ public interface EsProductService {
     void delete(List<String> ids);
 
     /**
-     * 根据关键字搜索名称或者副标题
+     * 根据关键字搜索名称、作者、出版社和分类
      */
     Page<EsProduct> search(String keyword, Integer pageNum, Integer pageSize);
 

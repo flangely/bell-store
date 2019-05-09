@@ -85,7 +85,7 @@ public class EsProductController {
                          @RequestParam(required = false, defaultValue = "0") Integer pageNum,
                          @RequestParam(required = false, defaultValue = "5") Integer pageSize,
                          @RequestParam(required = false, defaultValue = "0") Integer sort) {
-        pageNum--;
+//        pageNum--;
         Page<EsProduct> esProductPage = esProductService.search(keyword, brandId, productCategoryId, pageNum, pageSize, sort);
         return new CommonResult().pageSuccess(esProductPage);
     }

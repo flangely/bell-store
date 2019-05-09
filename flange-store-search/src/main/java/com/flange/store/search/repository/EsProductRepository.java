@@ -22,6 +22,6 @@ public interface EsProductRepository extends ElasticsearchRepository<EsProduct, 
      * @param page              分页信息
      * @return
      */
-    Page<EsProduct> findByNameOrSubTitleOrKeywords(String name, String subTitle, String keywords, Pageable page);
+    Page<EsProduct> findByNameOrSubTitleOrKeywordsOrProductCategoryNameOrBrandName(String name, String subTitle, String keywords, String productCategoryName, String brandName, Pageable page);
 
 }

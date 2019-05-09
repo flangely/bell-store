@@ -99,7 +99,7 @@ public class EsProductServiceImpl implements EsProductService {
     public Page<EsProduct> search(String keyword, Integer pageNum, Integer pageSize) {
 //        Pageable pageable = new PageRequest(pageNum, pageSize);
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return productRepository.findByNameOrSubTitleOrKeywords(keyword, keyword, keyword, pageable);
+        return productRepository.findByNameOrSubTitleOrKeywordsOrProductCategoryNameOrBrandName(keyword, keyword, keyword, keyword, keyword, pageable);
     }
 
     public Page<EsProduct> search(String keyword, String brandId, String productCategoryId, Integer pageNum, Integer pageSize,Integer sort) {
@@ -110,10 +110,10 @@ public class EsProductServiceImpl implements EsProductService {
         //过滤
         if (brandId != null || productCategoryId != null) {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            if (brandId != null) {
+            if (brandId != null && !brandId.equals("")) {
                 boolQueryBuilder.must(QueryBuilders.termQuery("brandId", brandId));
             }
-            if (productCategoryId != null) {
+            if (productCategoryId != null && !productCategoryId.equals("")) {
                 boolQueryBuilder.must(QueryBuilders.termQuery("productCategoryId", productCategoryId));
             }
             nativeSearchQueryBuilder.withFilter(boolQueryBuilder);

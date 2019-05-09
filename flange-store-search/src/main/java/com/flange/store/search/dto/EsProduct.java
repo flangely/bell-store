@@ -30,8 +30,8 @@ public class EsProduct implements Serializable {
     private String brandName;
 
     private String productCategoryId;
-    @Field(type = FieldType.Text)
 
+    @Field(type = FieldType.Text)
     private String productCategoryName;
 
     private String pic;
