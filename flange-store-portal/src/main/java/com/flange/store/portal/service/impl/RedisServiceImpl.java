@@ -2,6 +2,7 @@ package com.flange.store.portal.service.impl;
 
 import com.flange.store.portal.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,30 @@ public class RedisServiceImpl implements RedisService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
 
     @Override
     public void set(String key, String value) {
         stringRedisTemplate.opsForValue().set(key, value);
     }
+
+    @Override
+    public void setObj(String objKey, Object key, Object value) {
+        redisTemplate.opsForHash().put(objKey, key, value);
+    }
+
+    @Override
+    public Object getObj(String objKey, Object key) {
+       return redisTemplate.opsForHash().get(objKey, key);
+    }
+
+    @Override
+    public void removeObj(String objKey, Object key) {
+        redisTemplate.opsForHash().delete(objKey, key);
+    }
+
 
     @Override
     public String get(String key) {

@@ -2,6 +2,7 @@ package com.flange.store.portal.service.impl;
 
 import com.flange.store.portal.domain.MemberSearchRecord;
 import com.flange.store.portal.repository.MemberSearchRecordRepository;
+import com.flange.store.portal.service.MemberSearchRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

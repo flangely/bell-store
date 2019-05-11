@@ -1,4 +1,4 @@
-package com.flange.store.portal.service.impl;
+package com.flange.store.portal.service;
 
 import com.flange.store.portal.domain.MemberSearchRecord;
 

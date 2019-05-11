@@ -1,5 +1,7 @@
 package com.flange.store.portal.service;
 
+import com.flange.store.portal.domain.HomeContentResult;
+
 /**
  * @author flangely
  * @create 2019-04-19
@@ -11,6 +13,12 @@ public interface RedisService {
      * 存储数据
      */
     void set(String key, String value);
+
+    void setObj(String objKey, Object key, Object value);
+
+    Object getObj(String objKey, Object key);
+
+    void removeObj(String objKey, Object key);
 
     /**
      * 获取数据

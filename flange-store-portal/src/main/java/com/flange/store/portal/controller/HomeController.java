@@ -30,7 +30,7 @@ public class HomeController {
     @RequestMapping(value = "/content", method = RequestMethod.GET)
     @ResponseBody
     public Object content() {
-        HomeContentResult contentResult = homeService.content();
+        Object contentResult = homeService.content();
         return new CommonResult().success(contentResult);
     }
 

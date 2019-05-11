@@ -8,12 +8,11 @@ import com.flange.store.model.*;
 import com.flange.store.portal.dao.HomeDao;
 import com.flange.store.portal.domain.HomeContentResult;
 import com.flange.store.portal.service.HomeService;
+import com.flange.store.portal.service.RedisService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,17 +34,26 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private CmsSubjectMapper subjectMapper;
 
+    @Autowired
+    private RedisService redisService;
+
     @Override
-    public HomeContentResult content() {
+    public Object content() {
         HomeContentResult result = new HomeContentResult();
-        //获取首页广告
-        result.setAdvertiseList(getHomeAdvertiseList());
-        //获取推荐出版社
-        result.setBrandList(homeDao.getRecommendBrandList(0,20));
-        //获取新品推荐
-        result.setNewProductList(homeDao.getNewProductList(0,20));
-        //获取人气推荐
-        result.setHotProductList(homeDao.getHotProductList(0,20));
+        Object homeCache = redisService.getObj("home", "content");
+        if (homeCache == null){
+            //获取首页广告
+            result.setAdvertiseList(getHomeAdvertiseList());
+            //获取推荐出版社
+            result.setBrandList(homeDao.getRecommendBrandList(0,20));
+            //获取新品推荐
+            result.setNewProductList(homeDao.getNewProductList(0,20));
+            //获取人气推荐
+            result.setHotProductList(homeDao.getHotProductList(0,20));
+            redisService.setObj("home", "content", result);
+        }else {
+            return homeCache;
+        }
         return result;
     }
 

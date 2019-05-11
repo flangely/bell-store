@@ -2,7 +2,7 @@ package com.flange.store.portal.controller;
 
 import com.flange.store.portal.domain.CommonResult;
 import com.flange.store.portal.domain.MemberSearchRecord;
-import com.flange.store.portal.service.impl.MemberSearchRecordService;
+import com.flange.store.portal.service.MemberSearchRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

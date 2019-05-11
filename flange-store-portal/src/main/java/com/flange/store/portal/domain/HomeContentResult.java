@@ -7,6 +7,7 @@ import com.flange.store.model.SmsHomeAdvertise;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -17,7 +18,9 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class HomeContentResult {
+public class HomeContentResult implements Serializable {
+
+    private static final long serialVersionUID = 2399913213564623189L;
     //轮播广告
     private List<SmsHomeAdvertise> advertiseList;
     //推荐出版社

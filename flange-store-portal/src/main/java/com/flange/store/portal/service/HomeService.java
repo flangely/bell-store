@@ -18,7 +18,7 @@ public interface HomeService {
     /**
      * 获取首页内容
      */
-    HomeContentResult content();
+    Object content();
 
     /**
      * 首页商品推荐
