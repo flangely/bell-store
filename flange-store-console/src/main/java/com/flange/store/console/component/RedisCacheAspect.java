@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
+ * 首页缓存更新时删除redis缓存
  * @author flangely
  * @create 2019-05-11
  * <p>
