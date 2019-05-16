@@ -245,6 +245,35 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         return orderMapper.updateByPrimaryKeySelective(order);
     }
 
+    @Override
+    public int confirmOrderReceive(String id) {
+        OmsOrder order = new OmsOrder();
+        order.setId(id);
+        order.setReceiveTime(new Date());
+        order.setStatus(3);
+        updateSale(id);
+        return orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+
+
+    public void updateSale(String orderId){
+        OmsOrderExample example = new OmsOrderExample();
+        example.createCriteria().andIdEqualTo(orderId).andDeleteStatusEqualTo(0);
+        List<OmsOrder> confirmOrderList = orderMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(confirmOrderList)){
+            return;
+        }
+        OmsOrder confirmOrder = confirmOrderList.get(0);
+        if(confirmOrder!=null){
+            OmsOrderItemExample orderItemExample=new OmsOrderItemExample();
+            orderItemExample.createCriteria().andOrderIdEqualTo(orderId);
+            List<OmsOrderItem> orderItemList = orderItemMapper.selectByExample(orderItemExample);
+            List<String> orderProductIdList = orderItemList.stream().map(item -> item.getProductId()).collect(Collectors.toList());
+            List<PmsProduct> orderProductList = getOrderProduct(orderProductIdList);
+            increaseSale(orderItemList, orderProductList);
+        }
+    }
 
     /**
      * 生成18位订单编号:8位日期+2位平台号码+2位支付方式+6位以上自增id
@@ -286,6 +315,30 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
 
 
     }
+
+
+    /**
+     * 订单确认收货后后增加商品销量
+     * @param orderItemList
+     * @param selectedProductList
+     */
+    private void increaseSale(List<OmsOrderItem> orderItemList, List<PmsProduct> selectedProductList){
+
+        for (OmsOrderItem orderItem : orderItemList){
+            for (PmsProduct oldProduct : selectedProductList){
+                if (oldProduct.getId().equals(orderItem.getProductId())){
+                    PmsProduct product = new PmsProduct();
+                    product.setId(oldProduct.getId());
+                    product.setSale(oldProduct.getSale() + orderItem.getProductQuantity());
+                    productMapper.updateByPrimaryKeySelective(product);
+                }
+            }
+
+        }
+
+
+    }
+
 
     /**
      * 订单取消后增加商品库存

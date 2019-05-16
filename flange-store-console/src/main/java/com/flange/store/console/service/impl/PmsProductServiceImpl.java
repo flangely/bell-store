@@ -51,10 +51,7 @@ public class PmsProductServiceImpl implements PmsProductService {
         PmsProduct product = productParam;
         product.setId(IdUtil.getGeneralID());
         product.setVerifyStatus(1);
-        productMapper.insertSelective(product);
-        productChangeSender.sendMessage(product.getId() + ",add");
-        count = 1;
-        return count;
+        return productMapper.insertSelective(product);
     }
 
     @Override
@@ -112,10 +109,22 @@ public class PmsProductServiceImpl implements PmsProductService {
     @Override
     public int updatePublishStatus(List<String> ids, Integer publishStatus) {
         PmsProduct record = new PmsProduct();
+        String operate = "";
+        String idStr = "";
+        if (publishStatus == 0){
+            operate = "delete";
+        }else {
+            operate = "add";
+        }
+        for (String id : ids){
+            idStr += id + ",";
+        }
         record.setPublishStatus(publishStatus);
         PmsProductExample example = new PmsProductExample();
         example.createCriteria().andIdIn(ids);
-        return productMapper.updateByExampleSelective(record, example);
+        int count = productMapper.updateByExampleSelective(record, example);
+        productChangeSender.sendMessage(idStr + operate);
+        return count;
     }
 
     @Override

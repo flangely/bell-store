@@ -5,17 +5,19 @@ import com.flange.store.console.dto.OmsOrderReturnApplyResult;
 import com.flange.store.console.dto.OmsReturnApplyQueryParam;
 import com.flange.store.console.dto.OmsUpdateStatusParam;
 import com.flange.store.console.service.OmsOrderReturnApplyService;
+import com.flange.store.mapper.OmsOrderItemMapper;
 import com.flange.store.mapper.OmsOrderMapper;
 import com.flange.store.mapper.OmsOrderReturnApplyMapper;
-import com.flange.store.model.OmsOrder;
-import com.flange.store.model.OmsOrderReturnApply;
-import com.flange.store.model.OmsOrderReturnApplyExample;
+import com.flange.store.mapper.PmsProductMapper;
+import com.flange.store.model.*;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author flangely
@@ -32,6 +34,12 @@ public class OmsOrderReturnApplyServiceImpl implements OmsOrderReturnApplyServic
 
     @Autowired
     private OmsOrderMapper orderMapper;
+
+    @Autowired
+    private OmsOrderItemMapper orderItemMapper;
+
+    @Autowired
+    private PmsProductMapper productMapper;
     @Override
     public List<OmsOrderReturnApply> list(OmsReturnApplyQueryParam queryParam, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum,pageSize);
@@ -70,6 +78,8 @@ public class OmsOrderReturnApplyServiceImpl implements OmsOrderReturnApplyServic
             returnApply.setReceiveMan(statusParam.getReceiveMan());
             returnApply.setReceiveNote(statusParam.getReceiveNote());
             order.setStatus(7);
+            //恢复库存
+            addQuantity(order.getId());
         }else if(status.equals(3)){
             //拒绝退货
             returnApply.setId(id);
@@ -88,5 +98,55 @@ public class OmsOrderReturnApplyServiceImpl implements OmsOrderReturnApplyServic
     @Override
     public OmsOrderReturnApplyResult getItem(String id) {
         return returnApplyDao.getDetail(id);
+    }
+
+    public void addQuantity(String orderId){
+        //查询为付款的取消订单
+        OmsOrderExample example = new OmsOrderExample();
+        example.createCriteria().andIdEqualTo(orderId).andDeleteStatusEqualTo(0);
+        List<OmsOrder> orderList = orderMapper.selectByExample(example);
+        if(CollectionUtils.isEmpty(orderList)){
+            return;
+        }
+        OmsOrder cancelOrder = orderList.get(0);
+        if(cancelOrder!=null){
+
+            OmsOrderItemExample orderItemExample=new OmsOrderItemExample();
+            orderItemExample.createCriteria().andOrderIdEqualTo(orderId);
+            List<OmsOrderItem> orderItemList = orderItemMapper.selectByExample(orderItemExample);
+            //解除订单商品库存锁定
+            List<String> orderProductIdList = orderItemList.stream().map(item -> item.getProductId()).collect(Collectors.toList());
+            List<PmsProduct> orderProductList = getOrderProduct(orderProductIdList);
+            increaseStock(orderItemList, orderProductList);
+        }
+    }
+
+    private List<PmsProduct> getOrderProduct(List<String> productIdList){
+        PmsProductExample example = new PmsProductExample();
+        example.createCriteria().andIdIn(productIdList);
+        List<PmsProduct> selectedProductList = productMapper.selectByExample(example);
+        return selectedProductList;
+    }
+
+    /**
+     * 订单取消后增加商品库存
+     * @param orderItemList
+     * @param selectedProductList
+     */
+    private void increaseStock(List<OmsOrderItem> orderItemList, List<PmsProduct> selectedProductList){
+
+        for (OmsOrderItem orderItem : orderItemList){
+            for (PmsProduct oldProduct : selectedProductList){
+                if (oldProduct.getId().equals(orderItem.getProductId())){
+                    PmsProduct product = new PmsProduct();
+                    product.setId(oldProduct.getId());
+                    product.setStock(oldProduct.getStock() + orderItem.getProductQuantity());
+                    productMapper.updateByPrimaryKeySelective(product);
+                }
+            }
+
+        }
+
+
     }
 }

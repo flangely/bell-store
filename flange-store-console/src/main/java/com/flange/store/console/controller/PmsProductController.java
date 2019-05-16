@@ -1,5 +1,6 @@
 package com.flange.store.console.controller;
 
+import com.flange.store.console.component.ProductChangeSender;
 import com.flange.store.console.dto.CommonResult;
 import com.flange.store.console.dto.PmsProductParam;
 import com.flange.store.console.dto.PmsProductQueryParam;
@@ -30,6 +31,9 @@ public class PmsProductController {
 
     @Autowired
     private PmsProductService productService;
+
+    @Autowired
+    private ProductChangeSender productChangeSender;
 
 
     @ApiOperation("创建商品")

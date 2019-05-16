@@ -35,6 +35,8 @@ public class ProductChangeReceiver {
             String operate = msg[msg.length - 1];
             if (operate.equals("delete")){
                 esProductService.delete(ids);
+            }else {
+                esProductService.importAll();
             }
         }
         if (msg.length == 2){
@@ -45,6 +47,9 @@ public class ProductChangeReceiver {
             }
             if (operate.equals("edit")){
                 esProductService.create(id);
+            }
+            if (operate.equals("delete")){
+                esProductService.delete(id);
             }
 
 

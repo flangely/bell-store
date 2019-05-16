@@ -64,4 +64,11 @@ public interface OmsPortalOrderService {
      */
     int changeDelStatus(String id);
 
+    /**
+     * 更新收货时间
+     * @param id
+     * @return
+     */
+    int confirmOrderReceive(String id);
+
 }

@@ -58,14 +58,14 @@ public class OmsPortalOrderController {
         return portalOrderService.paySuccess(orderId, payType);
     }
 
-    @ApiOperation("自动取消超时订单")
+    @ApiOperation("取消订单")
     @RequestMapping(value = "/cancelTimeOutOrder",method = RequestMethod.POST)
     @ResponseBody
     public Object cancelTimeOutOrder(){
         return portalOrderService.cancelTimeOutOrder();
     }
 
-    @ApiOperation("取消单个超时订单")
+    @ApiOperation("取消单个订单")
     @RequestMapping(value = "/cancelOrder",method = RequestMethod.POST)
     @ResponseBody
     public Object cancelOrder(String orderId){
@@ -99,6 +99,15 @@ public class OmsPortalOrderController {
     public Object deleteStatusOrder(@RequestParam String id){
         UmsMember member = memberService.getCurrentMember();
         int count = portalOrderService.changeDelStatus(id);
+        return  new CommonResult().success(count);
+    }
+
+    @ApiOperation("确认收货")
+    @RequestMapping(value = "/confirmReceive",method = RequestMethod.PUT)
+    @ResponseBody
+    public Object confirmReceive(@RequestParam String id){
+        UmsMember member = memberService.getCurrentMember();
+        int count = portalOrderService.confirmOrderReceive(id);
         return  new CommonResult().success(count);
     }
 
