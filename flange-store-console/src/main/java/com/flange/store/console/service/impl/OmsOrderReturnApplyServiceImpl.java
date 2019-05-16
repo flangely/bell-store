@@ -61,8 +61,7 @@ public class OmsOrderReturnApplyServiceImpl implements OmsOrderReturnApplyServic
             returnApply.setHandleTime(new Date());
             returnApply.setHandleMan(statusParam.getHandleMan());
             returnApply.setHandleNote(statusParam.getHandleNote());
-            order.setStatus(7);
-
+            order.setStatus(6);
         }else if(status.equals(2)){
             //完成退货
             returnApply.setId(id);

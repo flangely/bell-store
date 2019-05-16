@@ -39,11 +39,10 @@ public class OmsPortalOrderReturnApplyServiceImpl implements OmsPortalOrderRetur
         order.setId(returnApply.getOrderId());
         orderMapper.updateByPrimaryKeySelective(order);//更新订单状态为退货中
         OmsOrderReturnApply realApply = new OmsOrderReturnApply();
-        realApply.setMemberUsername(member.getUserName());
         BeanUtils.copyProperties(returnApply,realApply);
         realApply.setCreateTime(new Date());
         realApply.setStatus(0);
-
+        realApply.setMemberUsername(member.getUserName());
         return returnApplyMapper.insert(realApply);
     }
 }

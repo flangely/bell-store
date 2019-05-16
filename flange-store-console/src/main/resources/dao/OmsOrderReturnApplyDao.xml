@@ -13,7 +13,9 @@
         product_count,
         return_name,
         status,
-        handle_time
+        handle_time,
+        order_id,
+        order_sn
         FROM
         oms_order_return_apply
         WHERE
