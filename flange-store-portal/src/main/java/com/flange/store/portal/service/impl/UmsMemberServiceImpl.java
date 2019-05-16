@@ -125,6 +125,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         umsMember.setUserPassword(passwordEncoder.encode(password));
         umsMember.setCreateTime(new Date());
         umsMember.setStatus(1);
+        umsMember.setGender(0);
         umsMember.setNickname(username);
         memberMapper.insertSelective(umsMember);
         umsMember.setUserPassword(null);
